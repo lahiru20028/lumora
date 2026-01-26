@@ -23,20 +23,68 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-// delete products
-router.delete("/:id", async (req, res) => {
-  try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ message: "Product deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Delete failed" });
-  }
-});
+
 // GET SINGLE PRODUCT (needed for edit test)
 router.get("/:id", async (req, res) => {
-  const product = await Product.findById(req.params.id);
-  res.json(product);
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
+
+// ⭐ GET REVIEWS FOR A PRODUCT
+router.get("/:id/reviews", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json(product.reviews || []);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ⭐ ADD REVIEW TO PRODUCT
+router.post("/:id/reviews", async (req, res) => {
+  try {
+    const { rating, comment, reviewer } = req.body;
+
+    // Validate input
+    if (!rating || !comment || rating < 1 || rating > 5) {
+      return res.status(400).json({ message: "Invalid review data" });
+    }
+
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Add new review
+    const newReview = {
+      rating,
+      comment,
+      reviewer: reviewer || "Anonymous",
+    };
+
+    product.reviews.push(newReview);
+
+    // Update product rating (average of all reviews)
+    const totalRating = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+    product.rating = totalRating / product.reviews.length;
+
+    const updated = await product.save();
+    res.status(201).json(updated);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // UPDATE product
 router.put("/:id", async (req, res) => {
   try {
@@ -51,5 +99,14 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// Delete products
+router.delete("/:id", async (req, res) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Delete failed" });
+  }
+});
 
 export default router;

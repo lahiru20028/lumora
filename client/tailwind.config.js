@@ -3,6 +3,21 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontSize: {
+        'xs': '11px',
+        'sm': '12px',
+        'base': '13px',
+        'lg': '14px',
+        'xl': '15px',
+        '2xl': '16px',
+        '3xl': '18px',
+        '4xl': '20px',
+        '5xl': '24px',
+        '6xl': '28px',
+        '7xl': '32px',
+        '8xl': '36px',
+        '9xl': '40px',
+      },
       colors: {
         primary: {
           50: '#f0f4ed',

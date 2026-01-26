@@ -29,6 +29,12 @@ export const Register: React.FC = () => {
 
     try {
       await signUp(email, password);
+      // Set user in localStorage with 'user' role (not admin)
+      localStorage.setItem('user', JSON.stringify({ 
+        email, 
+        role: 'user',  // All registered users are regular users
+        name: email.split('@')[0]
+      }));
       navigate('/login');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
@@ -102,6 +108,16 @@ export const Register: React.FC = () => {
           </Link>
         </p>
       </div>
-    </div>
-  );
-};
+      <footer
+        style={{
+          background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
+          borderTop: "2px solid #3a5231",
+          padding: "24px 16px",
+          textAlign: "center",
+          marginTop: "60px",
+        }}
+      >
+        <p style={{ fontSize: "13px", color: "#d4c9b8", margin: 0, fontWeight: "500" }}>
+          © 2025 Lumora Candles. Handcrafted with love.
+        </p>
+      </footer>

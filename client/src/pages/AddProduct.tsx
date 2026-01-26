@@ -96,8 +96,17 @@ const AddProduct = () => {
           Add Product
         </button>
       </form>
-    </div>
-  );
-};
-
+      <footer
+        style={{
+          background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
+          borderTop: "2px solid #3a5231",
+          padding: "24px 16px",
+          textAlign: "center",
+          marginTop: "60px",
+        }}
+      >
+        <p style={{ fontSize: "13px", color: "#d4c9b8", margin: 0, fontWeight: "500" }}>
+          © 2025 Lumora Candles. Handcrafted with love.
+        </p>
+      </footer>
 export default AddProduct;

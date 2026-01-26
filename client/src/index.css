@@ -1,3 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Global font size reduction for AliExpress-like compact design */
+body {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  font-size: 13px;
+}
+
+p, span, div, a {
+  font-size: 13px;
+}
+
+button {
+  font-size: 13px;
+}
+
+input, textarea, select {
+  font-size: 13px;
+}
+/* Hide scrollbar while keeping scrolling functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -43,14 +43,14 @@ const Products = () => {
   return (
     <div style={{ 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+      background: '#f5f3f0'
     }}>
       
       {/* Hero Header */}
       <div style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        padding: '60px 24px 40px',
+        background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+        color: '#d4c9b8',
+        padding: '32px 16px 24px',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -58,21 +58,21 @@ const Products = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '12px',
-            marginBottom: '12px'
+            gap: '8px',
+            marginBottom: '8px'
           }}>
-            <Sparkles size={36} />
+            <Sparkles size={24} />
             <h1 style={{
-              fontSize: '48px',
+              fontSize: '28px',
               fontWeight: 'bold',
               margin: 0,
-              textShadow: '0 4px 20px rgba(0,0,0,0.2)'
+              textShadow: '0 2px 8px rgba(0,0,0,0.2)'
             }}>
               Our Collection
             </h1>
           </div>
           <p style={{
-            fontSize: '18px',
+            fontSize: '12px',
             opacity: 0.95,
             margin: 0
           }}>
@@ -81,34 +81,34 @@ const Products = () => {
         </div>
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
         
         {/* Search & Filter Bar */}
         <div style={{
           background: 'white',
-          borderRadius: '20px',
-          padding: '20px',
-          marginTop: '-30px',
-          marginBottom: '32px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
+          borderRadius: '8px',
+          padding: '12px',
+          marginTop: '-12px',
+          marginBottom: '16px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
           position: 'relative',
           zIndex: 10
         }}>
           <div style={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '16px'
+            gap: '8px'
           }}>
             
             {/* Search Bar */}
             <div style={{ position: 'relative' }}>
               <Search style={{
                 position: 'absolute',
-                left: '16px',
+                left: '8px',
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: '#9ca3af'
-              }} size={20} />
+              }} size={16} />
               <input
                 type="text"
                 placeholder="Search candles..."
@@ -116,10 +116,10 @@ const Products = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '14px 14px 14px 48px',
-                  fontSize: '15px',
-                  border: '2px solid #e5e7eb',
-                  borderRadius: '12px',
+                  padding: '8px 8px 8px 36px',
+                  fontSize: '13px',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '6px',
                   outline: 'none',
                   transition: 'border-color 0.3s'
                 }}
@@ -131,14 +131,14 @@ const Products = () => {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
-                marginBottom: '10px'
+                gap: '8px',
+                marginBottom: '6px'
               }}>
-                <Filter size={18} color="#667eea" />
+                <Filter size={14} color="#4a6741" />
                 <h3 style={{
-                  fontSize: '16px',
+                  fontSize: '12px',
                   fontWeight: 'bold',
-                  color: '#1f2937',
+                  color: '#4a6741',
                   margin: 0
                 }}>
                   Categories
@@ -147,7 +147,7 @@ const Products = () => {
 
               <div style={{
                 display: 'flex',
-                gap: '10px',
+                gap: '6px',
                 flexWrap: 'wrap'
               }}>
                 <button
@@ -156,17 +156,17 @@ const Products = () => {
                     setSearchTerm("");
                   }}
                   style={{
-                    padding: '10px 20px',
-                    fontSize: '14px',
+                    padding: '6px 12px',
+                    fontSize: '12px',
                     fontWeight: '600',
                     border: 'none',
-                    borderRadius: '10px',
+                    borderRadius: '4px',
                     cursor: 'pointer',
                     transition: 'all 0.3s',
                     ...(activeCategory === "all" ? {
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      color: 'white',
-                      boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)'
+                      background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                      color: '#d4c9b8',
+                      boxShadow: '0 2px 6px rgba(74, 103, 65, 0.3)'
                     } : {
                       background: '#f3f4f6',
                       color: '#6b7280'
@@ -183,17 +183,17 @@ const Products = () => {
                       setSearchTerm("");
                     }}
                     style={{
-                      padding: '10px 20px',
-                      fontSize: '14px',
+                      padding: '6px 12px',
+                      fontSize: '12px',
                       fontWeight: '600',
                       border: 'none',
-                      borderRadius: '10px',
+                      borderRadius: '4px',
                       cursor: 'pointer',
                       transition: 'all 0.3s',
                       ...(activeCategory === cat ? {
-                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                        color: 'white',
-                        boxShadow: '0 4px 12px rgba(240, 147, 251, 0.4)'
+                        background: 'linear-gradient(135deg, #6b8e6f 0%, #5a7d60 100%)',
+                        color: '#d4c9b8',
+                        boxShadow: '0 2px 6px rgba(107, 142, 111, 0.3)'
                       } : {
                         background: '#f3f4f6',
                         color: '#6b7280'
@@ -215,11 +215,11 @@ const Products = () => {
           gap: '10px',
           marginBottom: '24px'
         }}>
-          <Package size={24} color="#667eea" />
+          <Package size={24} color="#4a6741" />
           <h2 style={{
             fontSize: '24px',
             fontWeight: 'bold',
-            color: '#1f2937',
+            color: '#4a6741',
             margin: 0
           }}>
             {filtered.length} Products
@@ -238,17 +238,17 @@ const Products = () => {
           }}>
             <div style={{
               display: 'inline-block',
-              width: '50px',
-              height: '50px',
-              border: '5px solid #f3f4f6',
-              borderTop: '5px solid #667eea',
+              width: '40px',
+              height: '40px',
+              border: '3px solid #f3f4f6',
+              borderTop: '3px solid #4a6741',
               borderRadius: '50%',
               animation: 'spin 1s linear infinite'
             }}></div>
             <p style={{
-              fontSize: '16px',
+              fontSize: '13px',
               color: '#6b7280',
-              marginTop: '20px',
+              marginTop: '12px',
               fontWeight: '600'
             }}>
               Loading...
@@ -257,25 +257,25 @@ const Products = () => {
         ) : filtered.length === 0 ? (
           <div style={{
             background: 'white',
-            borderRadius: '20px',
-            padding: '60px',
+            borderRadius: '8px',
+            padding: '40px 20px',
             textAlign: 'center',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-            marginBottom: '60px'
+            boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+            marginBottom: '32px'
           }}>
-            <Package size={64} color="#d1d5db" style={{ margin: '0 auto 20px' }} />
+            <Package size={48} color="#d1d5db" style={{ margin: '0 auto 12px' }} />
             <h3 style={{
-              fontSize: '20px',
+              fontSize: '14px',
               fontWeight: 'bold',
               color: '#6b7280',
-              marginBottom: '10px'
+              marginBottom: '8px'
             }}>
               No Products Found
             </h3>
             <p style={{
-              fontSize: '15px',
+              fontSize: '12px',
               color: '#9ca3af',
-              marginBottom: '24px'
+              marginBottom: '16px'
             }}>
               {searchTerm ? "Try a different search" : "No products in this category"}
             </p>
@@ -285,15 +285,15 @@ const Products = () => {
                 setSearchTerm("");
               }}
               style={{
-                padding: '14px 28px',
-                fontSize: '15px',
+                padding: '8px 16px',
+                fontSize: '12px',
                 fontWeight: '600',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
+                background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                color: '#d4c9b8',
                 border: 'none',
-                borderRadius: '10px',
+                borderRadius: '4px',
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.4)'
+                boxShadow: '0 2px 6px rgba(74, 103, 65, 0.3)'
               }}
             >
               View All
@@ -302,9 +302,9 @@ const Products = () => {
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-            gap: '20px',
-            paddingBottom: '60px'
+            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+            gap: '12px',
+            paddingBottom: '32px'
           }}>
             {filtered.map(p => (
               <ProductCard
@@ -335,9 +335,24 @@ const Products = () => {
         }
 
         input:focus {
-          border-color: #667eea !important;
+          border-color: #4a6741 !important;
         }
       `}</style>
+
+      {/* Copyright Footer */}
+      <footer
+        style={{
+          background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
+          borderTop: "2px solid #3a5231",
+          padding: "24px 16px",
+          textAlign: "center",
+          marginTop: "60px",
+        }}
+      >
+        <p style={{ fontSize: "13px", color: "#d4c9b8", margin: 0, fontWeight: "500" }}>
+          © 2025 Lumora Candles. Handcrafted with love.
+        </p>
+      </footer>
     </div>
   );
 };

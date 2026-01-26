@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, Mail, Calendar, Award, ShoppingBag, LogOut, Edit2, Sparkles } from 'lucide-react';
+import { User, Mail, Calendar, Award, ShoppingBag, LogOut, Edit2, Sparkles, Package } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Profile: React.FC = () => {
@@ -11,7 +11,13 @@ const Profile: React.FC = () => {
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
-      setUser(JSON.parse(userData));
+      const parsedUser = JSON.parse(userData);
+      // Ensure role is set - default to 'user' if missing
+      if (!parsedUser.role) {
+        parsedUser.role = 'user';
+        localStorage.setItem('user', JSON.stringify(parsedUser));
+      }
+      setUser(parsedUser);
     } else {
       navigate('/login');
     }
@@ -38,42 +44,42 @@ const Profile: React.FC = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+      background: '#f5f3f0'
     }}>
       
       {/* Header */}
       <div style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        padding: '60px 24px 40px',
+        background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+        color: '#d4c9b8',
+        padding: '32px 16px 24px',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{
-            width: '100px',
-            height: '100px',
+            width: '56px',
+            height: '56px',
             background: 'rgba(255,255,255,0.2)',
             backdropFilter: 'blur(10px)',
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 20px',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-            border: '4px solid rgba(255,255,255,0.3)'
+            margin: '0 auto 12px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            border: '2px solid rgba(255,255,255,0.2)'
           }}>
-            <User size={50} />
+            <User size={28} />
           </div>
           <h1 style={{
-            fontSize: '48px',
+            fontSize: '24px',
             fontWeight: 'bold',
-            margin: '0 0 8px 0',
-            textShadow: '0 4px 20px rgba(0,0,0,0.2)'
+            margin: '0 0 4px 0',
+            textShadow: '0 2px 8px rgba(0,0,0,0.15)'
           }}>
             {user.name}
           </h1>
           <p style={{
-            fontSize: '18px',
+            fontSize: '12px',
             opacity: 0.95,
             margin: 0
           }}>
@@ -81,21 +87,21 @@ const Profile: React.FC = () => {
           </p>
           <span style={{
             display: 'inline-block',
-            marginTop: '16px',
-            padding: '8px 20px',
+            marginTop: '8px',
+            padding: '4px 12px',
             background: user.role === 'admin' ? 'rgba(251, 191, 36, 0.3)' : 'rgba(96, 165, 250, 0.3)',
             backdropFilter: 'blur(10px)',
-            borderRadius: '20px',
-            fontSize: '14px',
+            borderRadius: '12px',
+            fontSize: '11px',
             fontWeight: '600',
-            border: '2px solid rgba(255,255,255,0.3)'
+            border: '1px solid rgba(255,255,255,0.2)'
           }}>
             {user.role === 'admin' ? '👑 Admin Account' : '👤 User Account'}
           </span>
         </div>
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
         
         {/* Profile Cards Grid */}
         <div style={{
@@ -122,13 +128,13 @@ const Profile: React.FC = () => {
               <div style={{
                 width: '48px',
                 height: '48px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <User size={24} color="white" />
+                <User size={24} color="#d4c9b8" />
               </div>
               <h2 style={{
                 fontSize: '24px',
@@ -153,7 +159,7 @@ const Profile: React.FC = () => {
                 background: '#f9fafb',
                 borderRadius: '12px'
               }}>
-                <Mail size={20} color="#667eea" style={{ marginTop: '2px' }} />
+                <Mail size={20} color="#4a6741" style={{ marginTop: '2px' }} />
                 <div>
                   <p style={{
                     fontSize: '12px',
@@ -182,7 +188,7 @@ const Profile: React.FC = () => {
                 background: '#f9fafb',
                 borderRadius: '12px'
               }}>
-                <Award size={20} color="#667eea" style={{ marginTop: '2px' }} />
+                <Award size={20} color="#4a6741" style={{ marginTop: '2px' }} />
                 <div>
                   <p style={{
                     fontSize: '12px',
@@ -211,7 +217,7 @@ const Profile: React.FC = () => {
                 background: '#f9fafb',
                 borderRadius: '12px'
               }}>
-                <Calendar size={20} color="#667eea" style={{ marginTop: '2px' }} />
+                <Calendar size={20} color="#4a6741" style={{ marginTop: '2px' }} />
                 <div>
                   <p style={{
                     fontSize: '12px',
@@ -250,13 +256,13 @@ const Profile: React.FC = () => {
               <div style={{
                 width: '48px',
                 height: '48px',
-                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                background: 'linear-gradient(135deg, #6b8e6f 0%, #5a7d60 100%)',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Sparkles size={24} color="white" />
+                <Sparkles size={24} color="#d4c9b8" />
               </div>
               <h2 style={{
                 fontSize: '24px',
@@ -282,12 +288,12 @@ const Profile: React.FC = () => {
                     alignItems: 'center',
                     gap: '12px',
                     padding: '16px',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white',
+                    background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                    color: '#d4c9b8',
                     borderRadius: '12px',
                     textDecoration: 'none',
                     fontWeight: '600',
-                    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+                    boxShadow: '0 4px 15px rgba(74, 103, 65, 0.4)',
                     transition: 'all 0.3s'
                   }}
                 >
@@ -314,6 +320,27 @@ const Profile: React.FC = () => {
                 <ShoppingBag size={20} />
                 Browse Products
               </Link>
+
+              {user.role === 'admin' && (
+                <Link
+                  to="/orders"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    padding: '16px',
+                    background: '#f3f4f6',
+                    color: '#1f2937',
+                    borderRadius: '12px',
+                    textDecoration: 'none',
+                    fontWeight: '600',
+                    transition: 'all 0.3s'
+                  }}
+                >
+                  <Package size={20} />
+                  My Orders
+                </Link>
+              )}
 
               <button
                 onClick={handleSwitchAccount}
@@ -392,6 +419,21 @@ const Profile: React.FC = () => {
           box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
         }
       `}</style>
+
+      {/* Copyright Footer */}
+      <footer
+        style={{
+          background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
+          borderTop: "2px solid #3a5231",
+          padding: "24px 16px",
+          textAlign: "center",
+          marginTop: "60px",
+        }}
+      >
+        <p style={{ fontSize: "13px", color: "#d4c9b8", margin: 0, fontWeight: "500" }}>
+          © 2025 Lumora Candles. Handcrafted with love.
+        </p>
+      </footer>
     </div>
   );
 };

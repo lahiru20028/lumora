@@ -10,7 +10,7 @@ const Home: React.FC = () => {
       <section style={{
         background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
         color: '#d4c9b8',
-        padding: '100px 24px',
+        padding: '40px 16px 32px',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -18,23 +18,23 @@ const Home: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '16px',
-            marginBottom: '24px'
+            gap: '12px',
+            marginBottom: '12px'
           }}>
-            <Sparkles size={48} style={{ animation: 'pulse 2s infinite' }} />
+            <Sparkles size={32} style={{ animation: 'pulse 2s infinite' }} />
             <h1 style={{
-              fontSize: '64px',
+              fontSize: '32px',
               fontWeight: 'bold',
               margin: 0,
-              textShadow: '0 4px 20px rgba(0,0,0,0.2)'
+              textShadow: '0 2px 8px rgba(0,0,0,0.2)'
             }}>
               Lumora Candles
             </h1>
           </div>
           
           <p style={{
-            fontSize: '24px',
-            marginBottom: '40px',
+            fontSize: '14px',
+            marginBottom: '16px',
             opacity: 0.95
           }}>
             ✨ Handcrafted candles that brighten your life and space ✨
@@ -45,19 +45,19 @@ const Home: React.FC = () => {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '12px',
+              gap: '8px',
               background: '#d4c9b8',
               color: '#4a6741',
               fontWeight: 'bold',
-              fontSize: '20px',
-              padding: '20px 48px',
-              borderRadius: '16px',
+              fontSize: '13px',
+              padding: '10px 24px',
+              borderRadius: '6px',
               textDecoration: 'none',
-              boxShadow: '0 8px 30px rgba(0,0,0,0.2)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
               transition: 'transform 0.3s, box-shadow 0.3s'
             }}
           >
-            <ShoppingBag size={24} />
+            <ShoppingBag size={16} />
             Shop Now
           </Link>
         </div>
@@ -66,60 +66,60 @@ const Home: React.FC = () => {
       {/* Why Choose Us - Stats Cards */}
       <section style={{
         maxWidth: '1200px',
-        margin: '-60px auto 0',
-        padding: '0 24px 80px',
+        margin: '-20px auto 0',
+        padding: '0 16px 32px',
         position: 'relative',
         zIndex: 10
       }}>
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '24px'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '12px'
         }}>
           
           <div style={{
             background: 'linear-gradient(135deg, #6b8e6f 0%, #4a6741 100%)',
-            borderRadius: '20px',
-            padding: '32px',
+            borderRadius: '8px',
+            padding: '16px',
             color: '#d4c9b8',
-            boxShadow: '0 10px 40px rgba(106, 142, 111, 0.4)',
+            boxShadow: '0 2px 8px rgba(106, 142, 111, 0.2)',
             textAlign: 'center'
           }}>
-            <Heart size={48} style={{ marginBottom: '16px', margin: '0 auto 16px' }} />
-            <h3 style={{ fontSize: '40px', fontWeight: 'bold', margin: '0 0 8px 0' }}>
+            <Heart size={28} style={{ marginBottom: '8px', margin: '0 auto 8px' }} />
+            <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>
               Handmade
             </h3>
-            <p style={{ fontSize: '16px', opacity: 0.9 }}>With Love & Care</p>
+            <p style={{ fontSize: '12px', opacity: 0.9 }}>With Love & Care</p>
           </div>
 
           <div style={{
             background: 'linear-gradient(135deg, #5a7d60 0%, #3a5231 100%)',
-            borderRadius: '20px',
-            padding: '32px',
+            borderRadius: '8px',
+            padding: '16px',
             color: '#d4c9b8',
-            boxShadow: '0 10px 40px rgba(74, 103, 65, 0.4)',
+            boxShadow: '0 2px 8px rgba(74, 103, 65, 0.2)',
             textAlign: 'center'
           }}>
-            <Award size={48} style={{ marginBottom: '16px', margin: '0 auto 16px' }} />
-            <h3 style={{ fontSize: '40px', fontWeight: 'bold', margin: '0 0 8px 0' }}>
+            <Award size={28} style={{ marginBottom: '8px', margin: '0 auto 8px' }} />
+            <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>
               Premium
             </h3>
-            <p style={{ fontSize: '16px', opacity: 0.9 }}>Quality Materials</p>
+            <p style={{ fontSize: '12px', opacity: 0.9 }}>Quality Materials</p>
           </div>
 
           <div style={{
             background: 'linear-gradient(135deg, #7a9a7b 0%, #5a7d60 100%)',
-            borderRadius: '20px',
-            padding: '32px',
+            borderRadius: '8px',
+            padding: '16px',
             color: '#d4c9b8',
-            boxShadow: '0 10px 40px rgba(90, 125, 96, 0.4)',
+            boxShadow: '0 2px 8px rgba(90, 125, 96, 0.2)',
             textAlign: 'center'
           }}>
-            <Truck size={48} style={{ marginBottom: '16px', margin: '0 auto 16px' }} />
-            <h3 style={{ fontSize: '40px', fontWeight: 'bold', margin: '0 0 8px 0' }}>
+            <Truck size={28} style={{ marginBottom: '8px', margin: '0 auto 8px' }} />
+            <h3 style={{ fontSize: '16px', fontWeight: 'bold', margin: '0 0 4px 0' }}>
               Fast
             </h3>
-            <p style={{ fontSize: '16px', opacity: 0.9 }}>Free Delivery</p>
+            <p style={{ fontSize: '12px', opacity: 0.9 }}>Free Delivery</p>
           </div>
 
         </div>
@@ -198,52 +198,52 @@ const Home: React.FC = () => {
       <section style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '0 24px 80px'
+        padding: '0 16px 32px'
       }}>
         <div style={{
           background: 'white',
-          borderRadius: '30px',
-          padding: '60px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.1)'
+          borderRadius: '8px',
+          padding: '24px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
         }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             <h2 style={{
-              fontSize: '48px',
+              fontSize: '24px',
               fontWeight: 'bold',
               background: 'linear-gradient(135deg, #4a6741 0%, #6b8e6f 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              marginBottom: '16px'
+              marginBottom: '8px'
             }}>
               About Lumora Candles
             </h2>
             <div style={{
-              width: '100px',
-              height: '4px',
+              width: '60px',
+              height: '2px',
               background: 'linear-gradient(135deg, #4a6741 0%, #6b8e6f 100%)',
               margin: '0 auto',
-              borderRadius: '2px'
+              borderRadius: '1px'
             }}></div>
           </div>
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '40px',
-            marginBottom: '40px'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '16px',
+            marginBottom: '16px'
           }}>
             <div>
               <h3 style={{
-                fontSize: '24px',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: '#1f2937',
-                marginBottom: '16px'
+                marginBottom: '8px'
               }}>
                 🕯️ Our Story
               </h3>
               <p style={{
-                fontSize: '16px',
-                lineHeight: '1.8',
+                fontSize: '12px',
+                lineHeight: '1.6',
                 color: '#6b7280'
               }}>
                 Lumora Candles was born from a passion for creating beautiful, handcrafted candles that bring warmth and light into every home. Each candle is carefully made with premium natural ingredients.
@@ -252,16 +252,16 @@ const Home: React.FC = () => {
 
             <div>
               <h3 style={{
-                fontSize: '24px',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: '#1f2937',
-                marginBottom: '16px'
+                marginBottom: '8px'
               }}>
                 🌿 Our Values
               </h3>
               <p style={{
-                fontSize: '16px',
-                lineHeight: '1.8',
+                fontSize: '12px',
+                lineHeight: '1.6',
                 color: '#6b7280'
               }}>
                 We believe in sustainability, quality, and craftsmanship. Every candle is made with eco-friendly materials and packaged with care for the environment. Your satisfaction is our priority.
@@ -270,16 +270,16 @@ const Home: React.FC = () => {
 
             <div>
               <h3 style={{
-                fontSize: '24px',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: '#1f2937',
-                marginBottom: '16px'
+                marginBottom: '8px'
               }}>
                 ✨ Our Promise
               </h3>
               <p style={{
-                fontSize: '16px',
-                lineHeight: '1.8',
+                fontSize: '12px',
+                lineHeight: '1.6',
                 color: '#6b7280'
               }}>
                 We promise to deliver exceptional quality, unique fragrances, and a warm glow that transforms your space. Each candle is tested to ensure the perfect burn every time.
@@ -293,65 +293,65 @@ const Home: React.FC = () => {
       <section style={{
         maxWidth: '1200px',
         margin: '0 auto',
-        padding: '0 24px 80px'
+        padding: '0 16px 32px'
       }}>
         <div style={{
           background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
-          borderRadius: '30px',
-          padding: '60px',
-          boxShadow: '0 20px 60px rgba(74, 103, 65, 0.3)',
+          borderRadius: '8px',
+          padding: '24px',
+          boxShadow: '0 1px 3px rgba(74, 103, 65, 0.15)',
           color: '#d4c9b8'
         }}>
-          <div style={{ textAlign: 'center', marginBottom: '50px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
             <h2 style={{
-              fontSize: '48px',
+              fontSize: '20px',
               fontWeight: 'bold',
-              marginBottom: '16px'
+              marginBottom: '4px'
             }}>
               📞 Contact Us
             </h2>
-            <p style={{ fontSize: '20px', opacity: 0.9 }}>
+            <p style={{ fontSize: '12px', opacity: 0.9 }}>
               We'd love to hear from you!
             </p>
           </div>
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '40px'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+            gap: '12px'
           }}>
             
             {/* Phone */}
             <div style={{
-              background: 'rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.1)',
               backdropFilter: 'blur(10px)',
-              borderRadius: '20px',
-              padding: '32px',
+              borderRadius: '6px',
+              padding: '12px',
               textAlign: 'center',
               transition: 'transform 0.3s'
             }}
             className="contact-card">
               <div style={{
-                background: 'rgba(255,255,255,0.2)',
-                width: '80px',
-                height: '80px',
+                background: 'rgba(255,255,255,0.15)',
+                width: '40px',
+                height: '40px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 24px'
+                margin: '0 auto 8px'
               }}>
-                <Phone size={40} />
+                <Phone size={20} />
               </div>
               <h3 style={{
-                fontSize: '24px',
+                fontSize: '12px',
                 fontWeight: 'bold',
-                marginBottom: '12px'
+                marginBottom: '4px'
               }}>
                 Phone
               </h3>
               <p style={{
-                fontSize: '18px',
+                fontSize: '11px',
                 opacity: 0.9
               }}>
                 +94 77 123 4567
@@ -360,35 +360,35 @@ const Home: React.FC = () => {
 
             {/* Email */}
             <div style={{
-              background: 'rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.1)',
               backdropFilter: 'blur(10px)',
-              borderRadius: '20px',
-              padding: '32px',
+              borderRadius: '6px',
+              padding: '12px',
               textAlign: 'center',
               transition: 'transform 0.3s'
             }}
             className="contact-card">
               <div style={{
-                background: 'rgba(255,255,255,0.2)',
-                width: '80px',
-                height: '80px',
+                background: 'rgba(255,255,255,0.15)',
+                width: '40px',
+                height: '40px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 24px'
+                margin: '0 auto 8px'
               }}>
-                <Mail size={40} />
+                <Mail size={20} />
               </div>
               <h3 style={{
-                fontSize: '24px',
+                fontSize: '12px',
                 fontWeight: 'bold',
-                marginBottom: '12px'
+                marginBottom: '4px'
               }}>
                 Email
               </h3>
               <p style={{
-                fontSize: '18px',
+                fontSize: '11px',
                 opacity: 0.9
               }}>
                 hello@lumora.com
@@ -397,35 +397,35 @@ const Home: React.FC = () => {
 
             {/* Location */}
             <div style={{
-              background: 'rgba(255,255,255,0.15)',
+              background: 'rgba(255,255,255,0.1)',
               backdropFilter: 'blur(10px)',
-              borderRadius: '20px',
-              padding: '32px',
+              borderRadius: '6px',
+              padding: '12px',
               textAlign: 'center',
               transition: 'transform 0.3s'
             }}
             className="contact-card">
               <div style={{
-                background: 'rgba(255,255,255,0.2)',
-                width: '80px',
-                height: '80px',
+                background: 'rgba(255,255,255,0.15)',
+                width: '40px',
+                height: '40px',
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                margin: '0 auto 24px'
+                margin: '0 auto 8px'
               }}>
-                <MapPin size={40} />
+                <MapPin size={20} />
               </div>
               <h3 style={{
-                fontSize: '24px',
+                fontSize: '12px',
                 fontWeight: 'bold',
-                marginBottom: '12px'
+                marginBottom: '4px'
               }}>
                 Location
               </h3>
               <p style={{
-                fontSize: '18px',
+                fontSize: '11px',
                 opacity: 0.9
               }}>
                 Colombo, Sri Lanka
@@ -436,56 +436,20 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer CTA */}
-      <section style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        padding: '0 24px 80px',
-        textAlign: 'center'
-      }}>
-        <div style={{
-          background: 'white',
-          borderRadius: '30px',
-          padding: '60px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.1)'
-        }}>
-          <h2 style={{
-            fontSize: '40px',
-            fontWeight: 'bold',
-            color: '#1f2937',
-            marginBottom: '24px'
-          }}>
-            Ready to Light Up Your Space? ✨
-          </h2>
-          <p style={{
-            fontSize: '20px',
-            color: '#6b7280',
-            marginBottom: '32px'
-          }}>
-            Discover our collection of handcrafted candles
-          </p>
-          <Link
-            to="/products"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '12px',
-              background: '#d4c9b8',
-              color: '#4a6741',
-              fontWeight: 'bold',
-              fontSize: '20px',
-              padding: '20px 48px',
-              borderRadius: '16px',
-              textDecoration: 'none',
-              boxShadow: '0 8px 30px rgba(212, 201, 184, 0.4)',
-              transition: 'transform 0.3s, box-shadow 0.3s'
-            }}
-          >
-            <ShoppingBag size={24} />
-            Browse Collection
-          </Link>
-        </div>
-      </section>
+      {/* Copyright Footer */}
+      <footer
+        style={{
+          background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
+          borderTop: "2px solid #3a5231",
+          padding: "24px 16px",
+          textAlign: "center",
+          marginTop: "60px",
+        }}
+      >
+        <p style={{ fontSize: "13px", color: "#d4c9b8", margin: 0, fontWeight: "500" }}>
+          © 2025 Lumora Candles. Handcrafted with love.
+        </p>
+      </footer>
 
       {/* CSS */}
       <style>{`
@@ -500,7 +464,7 @@ const Home: React.FC = () => {
         }
 
         .contact-card:hover {
-          transform: translateY(-8px);
+          transform: translateY(-4px);
         }
         
         a:hover {

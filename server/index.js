@@ -17,6 +17,19 @@ app.use(express.json());
 /* ================= ROUTES ================= */
 app.use("/api/products", productRoutes);
 
+// Get reviews for a product
+app.get("/api/reviews/:productId", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.json(product.reviews || []);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 /* ================= TEMP MIGRATION ROUTE ================= */
 /* ⚠️ VISIT ONCE THEN REMOVE */
 app.get("/api/migrate-categories", async (req, res) => {

@@ -22,33 +22,33 @@ const Checkout: React.FC = () => {
     return (
       <div style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+        background: '#f5f3f0',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '24px'
+        padding: '16px'
       }}>
         <div style={{
           background: 'white',
-          borderRadius: '30px',
-          padding: '60px 40px',
+          borderRadius: '8px',
+          padding: '40px 20px',
           textAlign: 'center',
-          maxWidth: '500px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.1)'
+          maxWidth: '400px',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.08)'
         }}>
-          <Package size={80} color="#d1d5db" style={{ margin: '0 auto 24px' }} />
+          <Package size={48} color="#d1d5db" style={{ margin: '0 auto 12px' }} />
           <h1 style={{
-            fontSize: '32px',
+            fontSize: '16px',
             fontWeight: 'bold',
             color: '#1f2937',
-            marginBottom: '16px'
+            marginBottom: '8px'
           }}>
             Your cart is empty
           </h1>
           <p style={{
-            fontSize: '18px',
+            fontSize: '12px',
             color: '#6b7280',
-            marginBottom: '32px'
+            marginBottom: '16px'
           }}>
             Add some products before checkout
           </p>
@@ -57,18 +57,18 @@ const Checkout: React.FC = () => {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '12px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
-              padding: '16px 32px',
-              fontSize: '18px',
+              gap: '8px',
+              background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+              color: '#d4c9b8',
+              padding: '10px 20px',
+              fontSize: '12px',
               fontWeight: '600',
-              borderRadius: '16px',
+              borderRadius: '4px',
               textDecoration: 'none',
-              boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)'
+              boxShadow: '0 2px 6px rgba(74, 103, 65, 0.3)'
             }}
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={14} />
             Go Shopping
           </Link>
         </div>
@@ -80,23 +80,23 @@ const Checkout: React.FC = () => {
     return (
       <div style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '24px'
+        padding: '16px'
       }}>
         <div style={{
           background: 'white',
-          borderRadius: '30px',
-          padding: '60px 40px',
+          borderRadius: '8px',
+          padding: '40px 20px',
           textAlign: 'center',
-          maxWidth: '500px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+          maxWidth: '400px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
         }}>
           <div style={{
-            width: '100px',
-            height: '100px',
+            width: '60px',
+            height: '60px',
             background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
             borderRadius: '50%',
             display: 'flex',
@@ -110,7 +110,7 @@ const Checkout: React.FC = () => {
           <h1 style={{
             fontSize: '40px',
             fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             marginBottom: '16px'
@@ -130,14 +130,14 @@ const Checkout: React.FC = () => {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '12px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
+              background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+              color: '#d4c9b8',
               padding: '16px 32px',
               fontSize: '18px',
               fontWeight: '600',
               borderRadius: '16px',
               textDecoration: 'none',
-              boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)'
+              boxShadow: '0 6px 20px rgba(74, 103, 65, 0.4)'
             }}
           >
             Back to Home
@@ -163,13 +163,13 @@ const Checkout: React.FC = () => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+      background: '#f5f3f0'
     }}>
       
       {/* Header */}
       <div style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
+        background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+        color: '#d4c9b8',
         padding: '60px 24px 40px',
         textAlign: 'center'
       }}>
@@ -230,13 +230,13 @@ const Checkout: React.FC = () => {
               <div style={{
                 width: '48px',
                 height: '48px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Package size={24} color="white" />
+                <Package size={24} color="#d4c9b8" />
               </div>
               <h2 style={{
                 fontSize: '24px',
@@ -289,7 +289,7 @@ const Checkout: React.FC = () => {
                   <p style={{
                     fontSize: '16px',
                     fontWeight: 'bold',
-                    color: '#667eea',
+                    color: '#4a6741',
                     margin: 0
                   }}>
                     Rs {(item.price * item.quantity).toFixed(2)}
@@ -324,20 +324,20 @@ const Checkout: React.FC = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '20px',
-                background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+                background: 'linear-gradient(135deg, #f5f3f0 0%, #f0ebe3 100%)',
                 borderRadius: '12px'
               }}>
                 <span style={{
                   fontSize: '20px',
                   fontWeight: 'bold',
-                  color: '#1f2937'
+                  color: '#4a6741'
                 }}>
                   Total
                 </span>
                 <span style={{
                   fontSize: '32px',
                   fontWeight: 'bold',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent'
                 }}>
@@ -363,13 +363,13 @@ const Checkout: React.FC = () => {
               <div style={{
                 width: '48px',
                 height: '48px',
-                background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                background: 'linear-gradient(135deg, #6b8e6f 0%, #5a7d60 100%)',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Sparkles size={24} color="white" />
+                <Sparkles size={24} color="#d4c9b8" />
               </div>
               <h2 style={{
                 fontSize: '24px',
@@ -610,12 +610,12 @@ const Checkout: React.FC = () => {
                   padding: '18px',
                   fontSize: '18px',
                   fontWeight: '600',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  color: 'white',
+                  background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                  color: '#d4c9b8',
                   border: 'none',
                   borderRadius: '14px',
                   cursor: 'pointer',
-                  boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)',
+                  boxShadow: '0 6px 20px rgba(74, 103, 65, 0.4)',
                   transition: 'all 0.3s',
                   display: 'flex',
                   alignItems: 'center',
@@ -635,13 +635,28 @@ const Checkout: React.FC = () => {
       {/* CSS */}
       <style>{`
         input:focus, textarea:focus {
-          border-color: #667eea !important;
+          border-color: #4a6741 !important;
         }
         button:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5) !important;
+          box-shadow: 0 8px 24px rgba(74, 103, 65, 0.5) !important;
         }
       `}</style>
+
+      {/* Copyright Footer */}
+      <footer
+        style={{
+          background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
+          borderTop: "2px solid #3a5231",
+          padding: "24px 16px",
+          textAlign: "center",
+          marginTop: "60px",
+        }}
+      >
+        <p style={{ fontSize: "13px", color: "#d4c9b8", margin: 0, fontWeight: "500" }}>
+          © 2025 Lumora Candles. Handcrafted with love.
+        </p>
+      </footer>
     </div>
   );
 };
