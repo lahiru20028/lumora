@@ -4,7 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import productRoutes from "./routes/productRoutes.js";
-import Product from "./models/Product.js"; // ✅ REQUIRED for migration
+import orderRoutes from "./routes/orderRoutes.js"; // ✅ Added Order Routes
+import Product from "./models/Product.js";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 
 /* ================= ROUTES ================= */
 app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes); // ✅ Registering Order Routes
 
 // Get reviews for a product
 app.get("/api/reviews/:productId", async (req, res) => {
@@ -27,39 +29,6 @@ app.get("/api/reviews/:productId", async (req, res) => {
     res.json(product.reviews || []);
   } catch (error) {
     res.status(500).json({ message: error.message });
-  }
-});
-
-/* ================= TEMP MIGRATION ROUTE ================= */
-/* ⚠️ VISIT ONCE THEN REMOVE */
-app.get("/api/migrate-categories", async (req, res) => {
-  try {
-    const result1 = await Product.updateMany(
-      { category: "Luxury" },
-      { $set: { category: "Flower" } }
-    );
-
-    const result2 = await Product.updateMany(
-      { category: "Jar" },
-      { $set: { category: "Glass" } }
-    );
-
-    const result3 = await Product.updateMany(
-      { category: "Shaped" },
-      { $set: { category: "Others" } }
-    );
-
-    res.json({
-      success: true,
-      message: "Categories migrated successfully!",
-      updated: {
-        Luxury_to_Flower: result1.modifiedCount,
-        Jar_to_Glass: result2.modifiedCount,
-        Shaped_to_Others: result3.modifiedCount,
-      },
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
   }
 });
 
