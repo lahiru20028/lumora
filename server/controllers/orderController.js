@@ -109,3 +109,25 @@ export const updateOrderStatus = async (req, res) => {
     res.status(500).json({ message: 'Error updating order status' });
   }
 };
+
+// Delete an order (admin)
+export const deleteOrder = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || id.length < 6) {
+      return res.status(400).json({ message: 'Invalid order id' });
+    }
+
+    const order = await Order.findByIdAndDelete(id);
+    if (!order) {
+      console.warn(`Order not found for id: ${id}`);
+      return res.status(404).json({ message: `Order not found (id: ${id})` });
+    }
+
+    console.log(`Order deleted: ${id}`);
+    res.json({ message: 'Order deleted' });
+  } catch (error) {
+    console.error('Error in deleteOrder:', error);
+    res.status(500).json({ message: 'Error deleting order' });
+  }
+};

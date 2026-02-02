@@ -105,6 +105,22 @@ const AdminOrders: React.FC = () => {
     }
   };
 
+  const handleDelete = async (orderId: string) => {
+    if (!window.confirm('Delete this order? This action cannot be undone.')) return;
+    setUpdatingOrder(orderId);
+    try {
+      await API.delete(`/api/orders/${orderId}`);
+      setAllOrders(prev => prev.filter(o => o._id !== orderId));
+      window.alert('Order deleted.');
+    } catch (err: any) {
+      const message = err?.response?.data?.message || err.message || 'Unable to delete order.';
+      console.error('Failed to delete order', message);
+      window.alert(message);
+    } finally {
+      setUpdatingOrder(null);
+    }
+  };
+
   if (loading || authLoading) return <p style={{ padding: 40 }}>Loading all store orders...</p>;
 
   return (
@@ -190,6 +206,10 @@ const AdminOrders: React.FC = () => {
 
                   <button onClick={() => printOrder(order)} disabled={updatingOrder === order._id} style={{ padding: '10px 14px', borderRadius: 8, background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)', color: '#d4c9b8', border: 'none', fontWeight: 700, cursor: 'pointer', opacity: updatingOrder === order._id ? 0.7 : 1 }}>
                     Print Invoice
+                  </button>
+
+                  <button onClick={() => handleDelete(order._id)} disabled={updatingOrder === order._id} style={{ padding: '10px 14px', borderRadius: 8, background: '#ef4444', color: 'white', border: 'none', fontWeight: 700, cursor: 'pointer', opacity: updatingOrder === order._id ? 0.6 : 1 }}>
+                    Delete Order
                   </button>
                 </div>
               </div>

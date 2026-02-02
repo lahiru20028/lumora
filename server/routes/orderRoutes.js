@@ -6,6 +6,7 @@ import {
   getUserOrders,
   getOrderById,
   updateOrderStatus,
+  deleteOrder,
 } from "../controllers/orderController.js";
 
 // Create order
@@ -22,5 +23,8 @@ router.get("/:id", getOrderById);
 
 // Admin: update an order status
 router.patch("/:id/status", updateOrderStatus);
+
+// Admin: delete an order
+router.delete("/:id", deleteOrder);
 
 export default router;
