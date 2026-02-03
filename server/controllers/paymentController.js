@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'); // Fallback to a dummy key pattern if env is missing, but this won't actually work without a real key.
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createPaymentIntent = async (req, res) => {
   try {
