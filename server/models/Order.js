@@ -6,6 +6,12 @@ const orderSchema = new mongoose.Schema(
       type: String, // Storing user email to link the order
       required: true,
     },
+    paymentMethod: {
+      type: String,
+      required: true,
+      enum: ['cod', 'bank', 'stripe'],
+      default: 'cod',
+    },
     // Optional shipping details provided at checkout
     shippingDetails: {
       fullName: { type: String },

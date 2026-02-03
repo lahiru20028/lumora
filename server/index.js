@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js"; // ✅ Added Order Routes
+import paymentRoutes from "./routes/paymentRoutes.js";
 import Product from "./models/Product.js";
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(express.json());
 /* ================= ROUTES ================= */
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes); // ✅ Registering Order Routes
+app.use("/api/payment", paymentRoutes);
 
 // Get reviews for a product
 app.get("/api/reviews/:productId", async (req, res) => {

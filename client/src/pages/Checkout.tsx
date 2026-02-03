@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useNavigate, Link } from "react-router-dom";
 import { CreditCard, MapPin, User, Phone, Mail, ArrowLeft, CheckCircle, Package, Sparkles } from "lucide-react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 
-const Checkout: React.FC = () => {
+// Initialize Stripe with your Publishable Key
+// Replace with your actual key in a real application or via environment variable
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx');
+
+const CheckoutForm: React.FC = () => {
   const { cartItems, clearCart, cartTotal } = useCart();
   const navigate = useNavigate();
+  const stripe = useStripe();
+  const elements = useElements();
 
   // State for form data
   const [formData, setFormData] = useState({
@@ -21,6 +29,7 @@ const Checkout: React.FC = () => {
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('cod');
 
   // 1. Redirect if cart is empty and order isn't placed
   if (cartItems.length === 0 && !orderPlaced) {
@@ -71,6 +80,69 @@ const Checkout: React.FC = () => {
       return;
     }
 
+    // Stripe Payment Logic
+    if (paymentMethod === 'stripe') {
+      if (!stripe || !elements) {
+        setError("Stripe hasn't loaded yet. Please try again.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        // 1. Create Payment Intent
+        const intentResponse = await fetch('http://localhost:5000/api/payment/create-payment-intent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: cartTotal }),
+        });
+
+        if (!intentResponse.ok) {
+          throw new Error('Failed to initialize payment.');
+        }
+
+        const { clientSecret } = await intentResponse.json();
+
+        // 2. Confirm Payment
+        const cardElement = elements.getElement(CardElement);
+        if (!cardElement) throw new Error("Card element not found");
+
+        const paymentResult = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: formData.fullName,
+              email: formData.email,
+              phone: formData.phone,
+              address: {
+                line1: formData.address,
+                city: formData.city,
+                postal_code: formData.zipCode,
+              },
+            },
+          },
+        });
+
+        if (paymentResult.error) {
+          setError(paymentResult.error.message || 'Payment failed');
+          setLoading(false);
+          return;
+        }
+
+        if (paymentResult.paymentIntent.status !== 'succeeded') {
+            setError('Payment not successful.');
+            setLoading(false);
+            return;
+        }
+
+        // Payment success! Proceed to save order.
+
+      } catch (err: any) {
+        setError(err.message || 'Payment processing failed.');
+        setLoading(false);
+        return;
+      }
+    }
+
     const orderPayload = {
       user: parsedUser.email, // Link to account
       orderItems: cartItems.map(item => ({
@@ -81,7 +153,8 @@ const Checkout: React.FC = () => {
         price: item.price
       })),
       totalPrice: cartTotal,
-      shippingDetails: formData // Optional: save address info too
+      shippingDetails: formData, // Optional: save address info too
+      paymentMethod
     };
 
     try {
@@ -149,6 +222,63 @@ const Checkout: React.FC = () => {
                 <input type="text" name="zipCode" placeholder="Zip" required value={formData.zipCode} onChange={handleChange} style={inputStyle} />
               </div>
 
+              {/* Payment Method */}
+              <div style={{ marginBottom: '20px' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>Payment Method</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'cod' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'cod' ? '#4a6741' : '#e5e7eb' }}>
+                        <input 
+                            type="radio" 
+                            name="paymentMethod" 
+                            value="cod" 
+                            checked={paymentMethod === 'cod'} 
+                            onChange={(e) => setPaymentMethod(e.target.value)} 
+                        />
+                        <span>Cash on Delivery</span>
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'bank' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'bank' ? '#4a6741' : '#e5e7eb' }}>
+                        <input 
+                            type="radio" 
+                            name="paymentMethod" 
+                            value="bank" 
+                            checked={paymentMethod === 'bank'} 
+                            onChange={(e) => setPaymentMethod(e.target.value)} 
+                        />
+                        <span>Bank Payment</span>
+                    </label>
+                    <label style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'stripe' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'stripe' ? '#4a6741' : '#e5e7eb' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <input 
+                                type="radio" 
+                                name="paymentMethod" 
+                                value="stripe" 
+                                checked={paymentMethod === 'stripe'} 
+                                onChange={(e) => setPaymentMethod(e.target.value)} 
+                            />
+                            <span>Credit/Debit Card (Stripe)</span>
+                        </div>
+                        {paymentMethod === 'stripe' && (
+                            <div style={{ marginTop: '10px', padding: '10px', background: 'white', borderRadius: '4px', border: '1px solid #e5e7eb' }}>
+                                <CardElement options={{
+                                    style: {
+                                        base: {
+                                            fontSize: '16px',
+                                            color: '#424770',
+                                            '::placeholder': {
+                                                color: '#aab7c4',
+                                            },
+                                        },
+                                        invalid: {
+                                            color: '#9e2146',
+                                        },
+                                    },
+                                }}/>
+                            </div>
+                        )}
+                    </label>
+                </div>
+              </div>
+
               <button type="submit" disabled={loading} style={{ 
                 width: '100%', padding: '16px', fontSize: '18px', fontWeight: 'bold', 
                 background: loading ? '#9ca3af' : 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)', 
@@ -166,6 +296,14 @@ const Checkout: React.FC = () => {
 
 const inputStyle = {
   width: '100%', padding: '12px', border: '1px solid #e5e7eb', borderRadius: '8px', fontSize: '15px', outline: 'none', boxSizing: 'border-box' as 'border-box'
+};
+
+const Checkout: React.FC = () => {
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
+  );
 };
 
 export default Checkout;
