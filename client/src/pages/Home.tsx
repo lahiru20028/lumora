@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ShoppingBag, Star, TrendingUp, Phone, Mail, MapPin, Heart, Award, Truck } from 'lucide-react';
+import { Sparkles, ShoppingBag, Star, TrendingUp, Phone, Mail, MapPin, Heart, Award, Truck, Facebook, Video, MessageCircle } from 'lucide-react';
 
 const Home: React.FC = () => {
   return (
@@ -350,12 +350,9 @@ const Home: React.FC = () => {
               }}>
                 Phone
               </h3>
-              <p style={{
-                fontSize: '11px',
-                opacity: 0.9
-              }}>
-                +94 77 123 4567
-              </p>
+              <a href="tel:+94703527374" style={{ color: 'inherit', textDecoration: 'none', fontSize: '11px', opacity: 0.9 }}>
+                +94 70 352 7374
+              </a>
             </div>
 
             {/* Email */}
@@ -387,12 +384,111 @@ const Home: React.FC = () => {
               }}>
                 Email
               </h3>
-              <p style={{
-                fontSize: '11px',
-                opacity: 0.9
+              <a href="mailto:lumora20250909@gmail.com" style={{ color: 'inherit', textDecoration: 'none', fontSize: '11px', opacity: 0.9, wordBreak: 'break-all' }}>
+                lumora20250909@gmail.com
+              </a>
+            </div>
+
+            {/* WhatsApp */}
+            <div style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '6px',
+              padding: '12px',
+              textAlign: 'center',
+              transition: 'transform 0.3s'
+            }}
+            className="contact-card">
+              <div style={{
+                background: 'rgba(255,255,255,0.15)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 8px'
               }}>
-                hello@lumora.com
-              </p>
+                <MessageCircle size={20} />
+              </div>
+              <h3 style={{
+                fontSize: '12px',
+                fontWeight: 'bold',
+                marginBottom: '4px'
+              }}>
+                WhatsApp
+              </h3>
+              <a href="https://wa.me/94703527374" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', fontSize: '11px', opacity: 0.9 }}>
+                +94 70 352 7374
+              </a>
+            </div>
+
+            {/* Facebook */}
+            <div style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '6px',
+              padding: '12px',
+              textAlign: 'center',
+              transition: 'transform 0.3s'
+            }}
+            className="contact-card">
+              <div style={{
+                background: 'rgba(255,255,255,0.15)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 8px'
+              }}>
+                <Facebook size={20} />
+              </div>
+              <h3 style={{
+                fontSize: '12px',
+                fontWeight: 'bold',
+                marginBottom: '4px'
+              }}>
+                Facebook
+              </h3>
+              <a href="https://web.facebook.com/profile.php?id=61581403703247" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', fontSize: '11px', opacity: 0.9 }}>
+                Lumora candles
+              </a>
+            </div>
+
+            {/* TikTok */}
+            <div style={{
+              background: 'rgba(255,255,255,0.1)',
+              backdropFilter: 'blur(10px)',
+              borderRadius: '6px',
+              padding: '12px',
+              textAlign: 'center',
+              transition: 'transform 0.3s'
+            }}
+            className="contact-card">
+              <div style={{
+                background: 'rgba(255,255,255,0.15)',
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 8px'
+              }}>
+                <Video size={20} />
+              </div>
+              <h3 style={{
+                fontSize: '12px',
+                fontWeight: 'bold',
+                marginBottom: '4px'
+              }}>
+                TikTok
+              </h3>
+              <a href="https://tiktok.com/@lumora.candles7" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', fontSize: '11px', opacity: 0.9 }}>
+                lumora.candles7
+              </a>
             </div>
 
             {/* Location */}
@@ -426,9 +522,10 @@ const Home: React.FC = () => {
               </h3>
               <p style={{
                 fontSize: '11px',
-                opacity: 0.9
+                opacity: 0.9,
+                margin: 0
               }}>
-                Colombo, Sri Lanka
+                Horana, Sri Lanka
               </p>
             </div>
 

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import logo from '../LOGO.png';
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,33 +44,38 @@ const Header: React.FC = () => {
             textDecoration: 'none',
             color: 'inherit'
           }}>
-            <div style={{
-              width: '48px',
-              height: '48px',
-              background: '#d4c9b8',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '28px'
-            }}>
-              🕯️
+            <img 
+              src={logo} 
+              alt="Lumora Candles" 
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '2px solid #d4c9b8'
+              }} 
+            />
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                color: '#d4c9b8',
+                letterSpacing: '1px',
+                lineHeight: '1.2'
+              }}>
+                Lumora Candles
+              </span>
+              <span style={{
+                fontSize: '11px',
+                color: '#d4c9b8',
+                letterSpacing: '3px',
+                textTransform: 'uppercase',
+                opacity: 0.9
+              }}>
+                Light + Aura
+              </span>
             </div>
-            <span style={{
-              fontSize: '28px',
-              fontWeight: 'bold',
-              color: '#d4c9b8',
-              letterSpacing: '2px'
-            }}>
-              Lumora
-            </span>
           </Link>
-
-          {/* Desktop Nav */}
-          <nav className="desktop-nav" style={{ display: 'none', gap: '32px' }}>
-            <Link to="/products" style={{ color: '#d4c9b8', textDecoration: 'none', fontWeight: '500' }}>Shop</Link>
-            <Link to="/products" style={{ color: '#d4c9b8', textDecoration: 'none', fontWeight: '500' }}>All Candles</Link>
-          </nav>
 
           {/* Right Side */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -227,8 +233,6 @@ const Header: React.FC = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <nav className="mobile-menu">
-            <Link to="/products" onClick={() => setMobileMenuOpen(false)} style={{ color: '#d4c9b8', textDecoration: 'none' }}>Shop</Link>
-            <Link to="/products" onClick={() => setMobileMenuOpen(false)} style={{ color: '#d4c9b8', textDecoration: 'none' }}>All Candles</Link>
             {user && (
               <>
                 <Link to="/profile" onClick={() => setMobileMenuOpen(false)} style={{ color: '#d4c9b8', textDecoration: 'none' }}>My Profile</Link>

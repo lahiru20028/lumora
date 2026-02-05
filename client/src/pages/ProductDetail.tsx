@@ -182,23 +182,37 @@ const ProductDetail = () => {
       {/* Header Section */}
       <div className="max-w-6xl mx-auto px-4 py-8">
       <button
-  onClick={() => navigate("/products")}
-  style={{
-    display: "flex",
-    alignItems: "center",
-    gap: "6px",
-    background: "#f3f4f6",
-    color: "#374151",
-    padding: "6px 12px",
-    fontSize: "12px",
-    borderRadius: "6px",
-    border: "1px solid #e5e7eb",
-    cursor: "pointer",
-    marginBottom: "12px"
-  }}
->
-  <ArrowLeft size={14} /> Back to Products
-</button>
+        onClick={() => navigate("/")}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          background: "#4a6741",
+          color: "#d4c9b8",
+          padding: "10px 24px",
+          fontSize: "14px",
+          fontWeight: "600",
+          borderRadius: "30px",
+          border: "2px solid #3a5231",
+          cursor: "pointer",
+          marginBottom: "24px",
+          transition: "all 0.3s ease",
+          boxShadow: "0 4px 10px rgba(74, 103, 65, 0.2)",
+          marginTop: "20px"
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "translateX(-4px)";
+          e.currentTarget.style.boxShadow = "0 6px 15px rgba(74, 103, 65, 0.3)";
+          e.currentTarget.style.background = "#3a5231";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateX(0)";
+          e.currentTarget.style.boxShadow = "0 4px 10px rgba(74, 103, 65, 0.2)";
+          e.currentTarget.style.background = "#4a6741";
+        }}
+      >
+        <ArrowLeft size={18} /> Back to Home
+      </button>
 
 
         {/* Product Section */}
@@ -279,13 +293,22 @@ const ProductDetail = () => {
       flex: 1,
       background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
       color: "#d4c9b8",
-      padding: "10px",
-      fontSize: "13px",
+      padding: "12px",
+      fontSize: "14px",
       fontWeight: "bold",
       border: "none",
-      borderRadius: "6px",
+      borderRadius: "12px",
       cursor: "pointer",
-      boxShadow: "0 2px 6px rgba(74, 103, 65, 0.3)"
+      boxShadow: "0 4px 10px rgba(74, 103, 65, 0.3)",
+      transition: "all 0.3s ease"
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = "translateY(-4px)";
+      e.currentTarget.style.boxShadow = "0 8px 20px rgba(74, 103, 65, 0.4)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.boxShadow = "0 4px 10px rgba(74, 103, 65, 0.3)";
     }}
   >
     🛒 Add to Cart
@@ -297,13 +320,22 @@ const ProductDetail = () => {
       flex: 1,
       background: "#ef4444",
       color: "white",
-      padding: "10px",
-      fontSize: "13px",
+      padding: "12px",
+      fontSize: "14px",
       fontWeight: "bold",
       border: "none",
-      borderRadius: "6px",
+      borderRadius: "12px",
       cursor: "pointer",
-      boxShadow: "0 2px 6px rgba(239, 68, 68, 0.3)"
+      boxShadow: "0 4px 10px rgba(239, 68, 68, 0.3)",
+      transition: "all 0.3s ease"
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.transform = "translateY(-4px)";
+      e.currentTarget.style.boxShadow = "0 8px 20px rgba(239, 68, 68, 0.4)";
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.transform = "translateY(0)";
+      e.currentTarget.style.boxShadow = "0 4px 10px rgba(239, 68, 68, 0.3)";
     }}
   >
     ⚡ Buy Now

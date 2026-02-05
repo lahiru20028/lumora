@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Phone, Mail, MapPin, Facebook, Video } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -36,22 +37,41 @@ export const Footer: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="text-white font-semibold mb-4">Support</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Contact Us
+            <h4 className="text-white font-semibold mb-4">Contact Us</h4>
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-center gap-2">
+                <Phone size={16} className="text-green-400" />
+                <a href="tel:+94703527374" className="hover:text-white transition">
+                  +94 70 352 7374
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Shipping Info
+              <li className="flex items-center gap-2">
+                <Mail size={16} className="text-green-400" />
+                <a href="mailto:lumora20250909@gmail.com" className="hover:text-white transition">
+                  lumora20250909@gmail.com
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:text-white transition">
-                  Returns
+              <li className="flex items-center gap-2">
+                <span className="text-green-400 font-bold">WA</span>
+                <a href="https://wa.me/94703527374" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                  +94 70 352 7374
                 </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Facebook size={16} className="text-green-400" />
+                <a href="https://web.facebook.com/profile.php?id=61581403703247" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                  Lumora candles
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Video size={16} className="text-green-400" />
+                <a href="https://tiktok.com/@lumora.candles7" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+                  lumora.candles7
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin size={16} className="text-green-400" />
+                <span>Horana, Sri Lanka</span>
               </li>
             </ul>
           </div>

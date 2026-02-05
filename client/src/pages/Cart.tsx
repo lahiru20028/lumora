@@ -57,7 +57,7 @@ const Cart = () => {
           </div>
 
           {/* ✅ FIXED TEXT */}
-          <p style={{ fontSize: "13px", margin: 0, opacity: 0.9 }}>
+          <p style={{ fontSize: "14px", margin: 0, marginTop: "8px", color: "#f3f4f6" }}>
             {totalItems} {totalItems === 1 ? "item" : "items"} in your cart
           </p>
         </div>
@@ -108,7 +108,7 @@ const Cart = () => {
             style={{
               display: "grid",
               gap: "32px",
-              marginTop: "-32px",
+              marginTop: "20px",
               paddingBottom: "64px",
             }}
           >

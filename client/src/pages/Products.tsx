@@ -109,15 +109,15 @@ const Products = () => {
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {/* Search */}
-            <div style={{ position: "relative" }}>
+            <div style={{ position: "relative", width: "100%" }}>
               <Search
-                size={16}
+                size={20}
                 style={{
                   position: "absolute",
-                  left: "8px",
+                  left: "12px",
                   top: "50%",
                   transform: "translateY(-50%)",
-                  color: "#9ca3af",
+                  color: "#6b7280",
                 }}
               />
               <input
@@ -127,11 +127,25 @@ const Products = () => {
                 onChange={e => setSearchTerm(e.target.value)}
                 style={{
                   width: "100%",
-                  padding: "8px 8px 8px 36px",
-                  fontSize: "13px",
-                  border: "1px solid #e5e7eb",
-                  borderRadius: "6px",
+                  padding: "12px 12px 12px 40px",
+                  fontSize: "14px",
+                  border: "2px solid #e5e7eb",
+                  borderRadius: "8px",
                   outline: "none",
+                  transition: "all 0.2s",
+                  color: "#374151",
+                  backgroundColor: "#f9fafb",
+                  boxSizing: "border-box"
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#4a6741";
+                  e.target.style.backgroundColor = "white";
+                  e.target.style.boxShadow = "0 0 0 3px rgba(74, 103, 65, 0.1)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e5e7eb";
+                  e.target.style.backgroundColor = "#f9fafb";
+                  e.target.style.boxShadow = "none";
                 }}
               />
             </div>
