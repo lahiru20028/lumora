@@ -1,8 +1,102 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ShoppingBag, Star, TrendingUp, Phone, Mail, MapPin, Heart, Award, Truck, Facebook, Video, MessageCircle } from 'lucide-react';
+import { Sparkles, Heart, Award, Truck, Phone, Mail, MapPin, Facebook, Video, MessageCircle } from 'lucide-react';
+import ProductCard from '../components/ProductCard';
+
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  description?: string;
+}
 
 const Home: React.FC = () => {
+  const [popularProducts, setPopularProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/products');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data: Product[] = await res.json();
+        
+        const targetNames = [
+          "two color glass candle",
+          "peony flower candle",
+          "rose candle",
+          "cup candle"
+        ];
+
+        // 1. Find specific popular items
+        let finalProducts = data.filter(p => 
+          targetNames.some(name => p.name.toLowerCase().trim() === name.toLowerCase().trim())
+        );
+
+        // 2. If fewer than 4, fill with other available products from API
+        if (finalProducts.length < 4) {
+          const others = data.filter(p => !finalProducts.includes(p));
+          finalProducts = [...finalProducts, ...others];
+        }
+
+        // 3. If still fewer than 4 (e.g. empty DB), fill with defaults
+        if (finalProducts.length < 4) {
+           // Filter defaults to avoid duplicates if any match (though unlikely with IDs)
+           const needed = 4 - finalProducts.length;
+           finalProducts = [...finalProducts, ...defaultPopularProducts.slice(0, needed)];
+        }
+
+        // 4. Ensure exactly 4 items
+        setPopularProducts(finalProducts.slice(0, 4));
+
+      } catch (error) {
+        console.error("Error fetching popular products, using defaults:", error);
+        setPopularProducts(defaultPopularProducts);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const defaultPopularProducts: Product[] = [
+    {
+      _id: 'default_1',
+      name: 'Two Color Glass Candle',
+      price: 1250,
+      category: 'Glass',
+      image: 'https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?auto=format&fit=crop&q=80&w=800',
+      description: 'Elegant dual-tone glass candle that adds a modern touch to your decor.'
+    },
+    {
+      _id: 'default_2',
+      name: 'Peony Flower Candle',
+      price: 1450,
+      category: 'Flower',
+      image: 'https://plus.unsplash.com/premium_photo-1670355464165-2767096e23b6?auto=format&fit=crop&q=80&w=800',
+      description: 'Intricately designed peony shape with a soft, floral fragrance.'
+    },
+    {
+      _id: 'default_3',
+      name: 'Rose Candle',
+      price: 1350,
+      category: 'Flower',
+      image: 'https://images.unsplash.com/photo-1596436579997-7501b44cb587?auto=format&fit=crop&q=80&w=800',
+      description: 'Classic rose design that brings romance and elegance to any room.'
+    },
+    {
+      _id: 'default_4',
+      name: 'Cup Candle',
+      price: 950,
+      category: 'Glass',
+      image: 'https://images.unsplash.com/photo-1543365067-fa127a3c3f91?auto=format&fit=crop&q=80&w=800',
+      description: 'Simple and versatile cup candle, perfect for daily use.'
+    }
+  ];
+
   return (
     <div style={{ background: '#f5f3f0' }}>
       
@@ -10,7 +104,7 @@ const Home: React.FC = () => {
       <section style={{
         background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
         color: '#d4c9b8',
-        padding: '40px 16px 32px',
+        padding: '40px 16px 60px',
         textAlign: 'center'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
@@ -34,32 +128,52 @@ const Home: React.FC = () => {
           
           <p style={{
             fontSize: '14px',
-            marginBottom: '16px',
+            marginBottom: '32px',
             opacity: 0.95
           }}>
             ✨ Handcrafted candles that brighten your life and space ✨
           </p>
           
-          <Link
-            to="/products"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: '#d4c9b8',
-              color: '#4a6741',
-              fontWeight: 'bold',
-              fontSize: '13px',
-              padding: '10px 24px',
-              borderRadius: '6px',
-              textDecoration: 'none',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              transition: 'transform 0.3s, box-shadow 0.3s'
-            }}
-          >
-            <ShoppingBag size={16} />
-            Shop Now
-          </Link>
+          {/* Popular Items Grid */}
+          {loading ? (
+             <div style={{ color: '#d4c9b8' }}>Loading popular items...</div>
+          ) : (
+            <>
+              <style>{`
+                .popular-grid {
+                  display: grid;
+                  grid-template-columns: 1fr; /* Mobile: 1 col */
+                  gap: 24px;
+                  max-width: 1024px;
+                  margin: 0 auto;
+                  padding: 0 16px;
+                }
+                @media (min-width: 640px) {
+                  .popular-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Tablet: 2 cols */
+                  }
+                }
+                @media (min-width: 1024px) {
+                  .popular-grid {
+                    grid-template-columns: repeat(4, minmax(0, 1fr)); /* Desktop: 4 cols force */
+                  }
+                }
+              `}</style>
+              <div className="popular-grid">
+                {popularProducts.map((product) => (
+                  <div key={product._id} style={{ textAlign: 'left' }}>
+                    <ProductCard 
+                      product={{
+                        ...product,
+                        image_url: product.image
+                      }} 
+                      compact={true}
+                    />
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
 

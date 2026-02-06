@@ -32,7 +32,8 @@ const Products = () => {
         const data: Product[] = await res.json();
 
         setProducts(data);
-        setCategories([...new Set(data.map(p => p.category))]);
+        // Define fixed categories as requested
+        setCategories(["Flower", "Glass", "Seasonal", "Others"]);
       } catch (error) {
         console.error("Failed to load products:", error);
         setProducts([]);
