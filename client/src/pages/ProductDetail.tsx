@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FormEvent } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { Star, ArrowLeft, ShoppingCart, User } from "lucide-react";
+import { Star, ArrowLeft, ShoppingCart, User, Truck } from "lucide-react";
 
 interface Review {
   _id?: string;
@@ -40,6 +40,8 @@ const ProductDetail = () => {
     reviewer: "",
   });
   const [submittingReview, setSubmittingReview] = useState(false);
+  const [scentType, setScentType] = useState<"Unscented" | "Scented">("Unscented");
+  const [selectedScent, setSelectedScent] = useState<string>("Lavender");
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -269,26 +271,91 @@ const ProductDetail = () => {
               {product.description}
             </p>
 
-            {/* Price Box */}
-            <div className="bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg p-6 mb-8 border border-orange-200">
-              <p className="text-sm font-semibold mb-2" style={{ color: "#4a6741" }}>Price</p>
-              <p className="text-4xl font-bold" style={{ color: "#ea580c" }}>
-                Rs {product.price}
-              </p>
+            {/* Scent Selection Options - Modern Redesign */}
+            <div className="mb-8 p-6 rounded-xl bg-white border border-[#e5e0d7] shadow-sm">
+              <h3 className="text-sm font-bold text-[#4a5d45] uppercase tracking-wider mb-4">
+                Customize Your Candle
+              </h3>
+              
+              {/* Type Selection - Toggle Chips */}
+              <div className="flex gap-4 mb-6">
+                <button
+                  onClick={() => setScentType("Unscented")}
+                  className={`flex-1 py-3 px-4 rounded-lg border-2 text-center transition-all duration-200 font-medium ${
+                    scentType === "Unscented"
+                      ? "bg-[#4a5d45] border-[#4a5d45] text-white shadow-md"
+                      : "bg-[#f9f9f7] border-[#4a5d45] text-[#4a5d45] hover:bg-[#edf5ea]"
+                  }`}
+                >
+                  Unscented
+                </button>
+
+                <button
+                  onClick={() => setScentType("Scented")}
+                  className={`flex-1 py-3 px-4 rounded-lg border-2 text-center transition-all duration-200 font-medium flex flex-col items-center justify-center ${
+                    scentType === "Scented"
+                      ? "bg-[#4a5d45] border-[#4a5d45] text-white shadow-md"
+                      : "bg-[#f9f9f7] border-[#4a5d45] text-[#4a5d45] hover:bg-[#edf5ea]"
+                  }`}
+                >
+                  <span>Scented</span>
+                  <span className={`text-[10px] uppercase tracking-wide mt-0.5 ${
+                    scentType === "Scented" ? "text-green-100 opacity-90" : "text-[#4a5d45] opacity-70"
+                  }`}>
+                    +Rs 100
+                  </span>
+                </button>
+              </div>
+
+              {/* Fragrance Dropdown (Animated) */}
+              <div className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                scentType === "Scented" ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
+              }`}>
+                <div className="relative mb-6">
+                  <label className="block text-xs font-bold text-[#4a5d45] mb-2 uppercase tracking-wide">
+                    Select Fragrance
+                  </label>
+                  <select
+                    value={selectedScent}
+                    onChange={(e) => setSelectedScent(e.target.value)}
+                    className="w-full p-3 pl-4 border-2 border-[#e5e0d7] rounded-lg focus:outline-none focus:border-[#4a5d45] bg-white cursor-pointer text-[#2d3a26] font-medium transition-colors"
+                  >
+                    <option value="Lavender">Lavender</option>
+                    <option value="Rose">Rose</option>
+                    <option value="Cinnamon">Cinnamon</option>
+                    <option value="Rani">Rani</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Total Price Display */}
+              <div className="flex items-center justify-between pt-6 mt-2 border-t border-[#e5e0d7]">
+                <span className="text-xl font-bold text-[#4a5d45]">Total Price</span>
+                <span className="text-4xl font-extrabold text-[#2d3a26]">
+                  Rs {scentType === "Scented" ? (product.price + 100).toLocaleString() : product.price.toLocaleString()}
+                </span>
+              </div>
             </div>
 
             {/* Add to Cart Button */}
-            <div style={{ display: "flex", gap: "10px", marginBottom: "24px" }}>
+            <div style={{ display: "flex", gap: "16px", marginBottom: "32px", marginTop: "16px" }}>
   <button
-    onClick={() =>
+    onClick={() => {
+      // Construct the item name with scent details
+      const itemDetails = scentType === "Scented" 
+        ? `${product.name} (Scented: ${selectedScent})`
+        : `${product.name} (Unscented)`;
+      
+      const finalPrice = scentType === "Scented" ? product.price + 100 : product.price;
+
       addToCart({
         productId: product._id,
-        name: product.name,
-        price: product.price,
+        name: itemDetails, // Pass the customized name
+        price: finalPrice,
         image_url: product.image_url || product.image || "",
         quantity: 1,
-      })
-    }
+      });
+    }}
     style={{
       flex: 1,
       background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
