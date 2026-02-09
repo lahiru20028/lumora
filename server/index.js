@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js"; // ✅ Added Order Routes
+import userRoutes from "./routes/userRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import Product from "./models/Product.js";
 
@@ -19,6 +20,7 @@ app.use(express.json());
 /* ================= ROUTES ================= */
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes); // ✅ Registering Order Routes
+app.use("/api/users", userRoutes);
 app.use("/api/payment", paymentRoutes);
 
 // Get reviews for a product
@@ -40,9 +42,16 @@ app.get("/", (req, res) => {
 });
 
 /* ================= DB CONNECT ================= */
+if (!process.env.MONGO_URI) {
+  console.error("❌ Error: MONGO_URI is not defined in .env file!");
+}
+
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected"))
+  .then((conn) => {
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`Connected to Database: ${conn.connection.name}`);
+  })
   .catch((err) => console.error("MongoDB Error:", err));
 
 /* ================= START SERVER ================= */

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, User, UserPlus, Sparkles } from 'lucide-react';
+import axios from 'axios';
 
 const Signup: React.FC = () => {
   const [name, setName] = useState('');
@@ -23,18 +24,18 @@ const Signup: React.FC = () => {
     }
 
     try {
-      // Replace this with your actual MERN backend API call
-      // const response = await axios.post('/api/auth/register', { name, email, password });
-      
-      console.log('Registering user:', { name, email, password });
-      
-      // Simulating success
-      setTimeout(() => {
-        setLoading(false);
-        navigate('/login'); // Send them back to login after signing up
-      }, 1500);
-    } catch (err) {
-      setError('Registration failed. Please try again.');
+      await axios.post('http://localhost:5000/api/users/register', {
+        name,
+        email,
+        password,
+      });
+
+      setLoading(false);
+      navigate('/login');
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || 'Registration failed. Please try again.'
+      );
       setLoading(false);
     }
   };

@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Heart, Award, Truck, Phone, Mail, MapPin, Facebook, Video, MessageCircle } from 'lucide-react';
+import { Sparkles, Heart, Award, Truck, Phone, Mail, MapPin, Facebook, Video, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import type { Swiper as SwiperType } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 interface Product {
   _id: string;
@@ -15,6 +23,7 @@ interface Product {
 const Home: React.FC = () => {
   const [popularProducts, setPopularProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const swiperRef = useRef<SwiperType>();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -48,12 +57,20 @@ const Home: React.FC = () => {
            finalProducts = [...finalProducts, ...defaultPopularProducts.slice(0, needed)];
         }
 
-        // 4. Ensure exactly 4 items
-        setPopularProducts(finalProducts.slice(0, 4));
+        // 4. Ensure exactly 4 items (original logic)
+        // setPopularProducts(finalProducts.slice(0, 4)); 
+
+        // UPDATED LOGIC: Ensure enough items for smooth looping (at least 8)
+        let displayProducts = finalProducts.slice(0, 4);
+        // Duplicate them to create a longer list for smooth infinite scrolling
+        displayProducts = [...displayProducts, ...displayProducts]; 
+        
+        setPopularProducts(displayProducts);
 
       } catch (error) {
         console.error("Error fetching popular products, using defaults:", error);
-        setPopularProducts(defaultPopularProducts);
+        // Duplicate defaults too
+        setPopularProducts([...defaultPopularProducts, ...defaultPopularProducts]);
       } finally {
         setLoading(false);
       }
@@ -134,43 +151,119 @@ const Home: React.FC = () => {
             ✨ Handcrafted candles that brighten your life and space ✨
           </p>
           
-          {/* Popular Items Grid */}
+          {/* Popular Items Carousel */}
           {loading ? (
              <div style={{ color: '#d4c9b8' }}>Loading popular items...</div>
           ) : (
             <>
               <style>{`
-                .popular-grid {
-                  display: grid;
-                  grid-template-columns: 1fr; /* Mobile: 1 col */
-                  gap: 24px;
-                  max-width: 1024px;
-                  margin: 0 auto;
-                  padding: 0 16px;
+                .swiper-pagination-bullet {
+                  background: #d4c9b8 !important;
+                  opacity: 0.5;
                 }
-                @media (min-width: 640px) {
-                  .popular-grid {
-                    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Tablet: 2 cols */
-                  }
+                .swiper-pagination-bullet-active {
+                  background: #4a6741 !important; /* Green active dot */
+                  opacity: 1;
                 }
-                @media (min-width: 1024px) {
-                  .popular-grid {
-                    grid-template-columns: repeat(4, minmax(0, 1fr)); /* Desktop: 4 cols force */
-                  }
+                .popular-swiper {
+                  padding-bottom: 40px !important; /* Space for pagination */
+                  padding-left: 4px;
+                  padding-right: 4px;
                 }
               `}</style>
-              <div className="popular-grid">
-                {popularProducts.map((product) => (
-                  <div key={product._id} style={{ textAlign: 'left' }}>
-                    <ProductCard 
-                      product={{
-                        ...product,
-                        image_url: product.image
-                      }} 
-                      compact={true}
-                    />
-                  </div>
-                ))}
+              
+              <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px', position: 'relative' }}>
+                
+                {/* Custom Navigation Buttons */}
+                <button 
+                  className="custom-prev-btn"
+                  onClick={() => swiperRef.current?.slidePrev()}
+                  style={{
+                    position: 'absolute',
+                    left: '0',
+                    top: '40%',
+                    zIndex: 20,
+                    transform: 'translateY(-50%) translate(-20px, 0)',
+                    background: 'rgba(74, 103, 65, 0.9)',
+                    color: '#d4c9b8',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                  }}
+                >
+                  <ChevronLeft size={24} />
+                </button>
+
+                <button 
+                  className="custom-next-btn"
+                  onClick={() => swiperRef.current?.slideNext()}
+                  style={{
+                    position: 'absolute',
+                    right: '0',
+                    top: '40%',
+                    zIndex: 20,
+                    transform: 'translateY(-50%) translate(20px, 0)',
+                    background: 'rgba(74, 103, 65, 0.9)',
+                    color: '#d4c9b8',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                  }}
+                >
+                  <ChevronRight size={24} />
+                </button>
+
+                <Swiper
+                  modules={[Navigation, Pagination, Autoplay]}
+                  spaceBetween={24}
+                  slidesPerView={1}
+                  onBeforeInit={(swiper) => {
+                    swiperRef.current = swiper;
+                  }}
+                  pagination={{ clickable: true }}
+                  loop={true}
+                  grabCursor={true}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                  }}
+                  breakpoints={{
+                    640: {
+                      slidesPerView: 2,
+                    },
+                    1024: {
+                      slidesPerView: 4,
+                    },
+                  }}
+                  className="popular-swiper"
+                >
+                  {popularProducts.map((product, index) => (
+                    <SwiperSlide key={`${product._id}-${index}`}>
+                      <div style={{ textAlign: 'left', height: '100%' }}>
+                        <ProductCard 
+                          product={{
+                            ...product,
+                            image_url: product.image
+                          }} 
+                          compact={true}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </>
           )}
