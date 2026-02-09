@@ -53,7 +53,7 @@ router.get("/:id/reviews", async (req, res) => {
 // ⭐ ADD REVIEW TO PRODUCT
 router.post("/:id/reviews", async (req, res) => {
   try {
-    const { rating, comment, reviewer } = req.body;
+    const { rating, comment, reviewer, image } = req.body;
 
     // Validate input
     if (!rating || !comment || rating < 1 || rating > 5) {
@@ -70,6 +70,7 @@ router.post("/:id/reviews", async (req, res) => {
       rating,
       comment,
       reviewer: reviewer || "Anonymous",
+      image,
     };
 
     product.reviews.push(newReview);
@@ -81,6 +82,7 @@ router.post("/:id/reviews", async (req, res) => {
     const updated = await product.save();
     res.status(201).json(updated);
   } catch (error) {
+    console.error("Error adding review:", error);
     res.status(500).json({ message: error.message });
   }
 });

@@ -16,6 +16,10 @@ const reviewSchema = new mongoose.Schema(
       type: String,
       default: "Anonymous",
     },
+    image: {
+      type: String, // Store image URL or Base64
+      required: false,
+    },
   },
   {
     timestamps: true,
