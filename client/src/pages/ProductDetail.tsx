@@ -42,8 +42,10 @@ const ProductDetail = () => {
     image: "", // Initialize image state
   });
   const [submittingReview, setSubmittingReview] = useState(false);
-  const [scentType, setScentType] = useState<"Unscented" | "Scented">("Unscented");
   const [selectedScent, setSelectedScent] = useState<string>("Lavender");
+  const [scentedQty, setScentedQty] = useState(0);
+  const [unscentedQty, setUnscentedQty] = useState(0);
+  const totalQty = scentedQty + unscentedQty;
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   // Filter & Sort States
@@ -57,7 +59,7 @@ const ProductDetail = () => {
         setLoading(true);
         // Fetch Product Details
         const response = await fetch(`http://localhost:5000/api/products/${id}`);
-        
+
         if (!response.ok) {
           throw new Error("Product not found");
         }
@@ -68,11 +70,11 @@ const ProductDetail = () => {
         // Fetch Reviews Separately (as requested)
         const reviewsRes = await fetch(`http://localhost:5000/api/reviews/${id}`);
         if (reviewsRes.ok) {
-           const reviewsData = await reviewsRes.json();
-           setReviews(reviewsData);
+          const reviewsData = await reviewsRes.json();
+          setReviews(reviewsData);
         } else {
-           // Fallback if needed
-           setReviews(data.reviews || []);
+          // Fallback if needed
+          setReviews(data.reviews || []);
         }
 
         // Fetch recommended products
@@ -188,8 +190,8 @@ const ProductDetail = () => {
     return result;
   }, [reviews, sortBy, filterStar]);
 
-  const averageRating = reviews.length > 0 
-    ? (reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1) 
+  const averageRating = reviews.length > 0
+    ? (reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1)
     : "0.0";
 
   // Calculate Star Distribution
@@ -257,18 +259,18 @@ const ProductDetail = () => {
     <div style={{ minHeight: "100vh", background: "#f5f3f0" }}>
       {/* Lightbox for Review Images */}
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 p-4"
           onClick={() => setSelectedImage(null)}
         >
           <div className="relative max-w-4xl max-h-[90vh]">
-            <img 
-              src={selectedImage} 
-              alt="Review Fullsize" 
+            <img
+              src={selectedImage}
+              alt="Review Fullsize"
               className="max-h-[90vh] rounded-lg shadow-2xl"
               style={{ objectFit: "contain" }}
             />
-            <button 
+            <button
               className="absolute -top-4 -right-4 bg-white text-black rounded-full p-2 hover:bg-gray-200 transition-colors"
               onClick={() => setSelectedImage(null)}
             >
@@ -283,38 +285,38 @@ const ProductDetail = () => {
 
       {/* Header Section */}
       <div className="max-w-6xl mx-auto px-4 py-8">
-      <button
-        onClick={() => navigate("/")}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          background: "#4a6741",
-          color: "#d4c9b8",
-          padding: "10px 24px",
-          fontSize: "14px",
-          fontWeight: "600",
-          borderRadius: "30px",
-          border: "2px solid #3a5231",
-          cursor: "pointer",
-          marginBottom: "24px",
-          transition: "all 0.3s ease",
-          boxShadow: "0 4px 10px rgba(74, 103, 65, 0.2)",
-          marginTop: "20px"
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = "translateX(-4px)";
-          e.currentTarget.style.boxShadow = "0 6px 15px rgba(74, 103, 65, 0.3)";
-          e.currentTarget.style.background = "#3a5231";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = "translateX(0)";
-          e.currentTarget.style.boxShadow = "0 4px 10px rgba(74, 103, 65, 0.2)";
-          e.currentTarget.style.background = "#4a6741";
-        }}
-      >
-        <ArrowLeft size={18} /> Back to Home
-      </button>
+        <button
+          onClick={() => navigate("/")}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "#4a6741",
+            color: "#d4c9b8",
+            padding: "10px 24px",
+            fontSize: "14px",
+            fontWeight: "600",
+            borderRadius: "30px",
+            border: "2px solid #3a5231",
+            cursor: "pointer",
+            marginBottom: "24px",
+            transition: "all 0.3s ease",
+            boxShadow: "0 4px 10px rgba(74, 103, 65, 0.2)",
+            marginTop: "20px"
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = "translateX(-4px)";
+            e.currentTarget.style.boxShadow = "0 6px 15px rgba(74, 103, 65, 0.3)";
+            e.currentTarget.style.background = "#3a5231";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = "translateX(0)";
+            e.currentTarget.style.boxShadow = "0 4px 10px rgba(74, 103, 65, 0.2)";
+            e.currentTarget.style.background = "#4a6741";
+          }}
+        >
+          <ArrowLeft size={18} /> Back to Home
+        </button>
 
 
         {/* Product Section */}
@@ -376,10 +378,10 @@ const ProductDetail = () => {
                   <Star
                     key={i}
                     size={24}
-                    className={
+                    style={
                       i < (product.rating || 0)
-                        ? "text-yellow-400 fill-yellow-400"
-                        : "text-gray-300"
+                        ? { color: '#c9972b', fill: '#c9972b' }
+                        : { color: '#d4c9b8', fill: 'none' }
                     }
                   />
                 ))}
@@ -394,7 +396,7 @@ const ProductDetail = () => {
               {product.description}
             </p>
 
-            {/* Scent Selection Options - Modern Redesign */}
+            {/* Quantity Selection Section */}
             <div style={{
               marginBottom: "40px",
               padding: "32px",
@@ -429,168 +431,220 @@ const ProductDetail = () => {
                 gap: "8px"
               }}>
                 <span style={{ width: "4px", height: "24px", background: "#4a6741", borderRadius: "999px" }}></span>
-                Customize Your Candle
+                Customize Your Order
               </h3>
-              
-              {/* Type Selection - Interactive Cards */}
-              <div style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-                marginBottom: "32px"
-              }}>
-                {/* Unscented Card */}
-                <div
-                  onClick={() => setScentType("Unscented")}
-                  style={{
-                    cursor: "pointer",
-                    position: "relative",
-                    padding: "12px", // Match Add to Cart padding
-                    borderRadius: "12px", // Match Add to Cart radius
-                    border: scentType === "Unscented" ? "2px solid #4a6741" : "2px solid #e5e0d7",
-                    background: scentType === "Unscented" ? "#4a6741" : "#fcfbf9",
-                    transition: "all 0.3s ease",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "4px",
-                    transform: scentType === "Unscented" ? "scale(1.02)" : "scale(1)",
-                    boxShadow: scentType === "Unscented" ? "0 4px 12px rgba(74, 103, 65, 0.2)" : "none",
-                    // Removed fixed height to let content determine size like Add to Cart
-                  }}
-                  onMouseEnter={(e) => {
-                    if (scentType !== "Unscented") {
-                      e.currentTarget.style.borderColor = "#4a6741";
-                      e.currentTarget.style.background = "#f4f7f3";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (scentType !== "Unscented") {
-                      e.currentTarget.style.borderColor = "#e5e0d7";
-                      e.currentTarget.style.background = "#fcfbf9";
-                    }
-                  }}
-                >
-                  <span style={{
-                    fontSize: "14px", // Match Add to Cart font size
-                    fontWeight: "bold", // Match Add to Cart weight
-                    color: scentType === "Unscented" ? "#d4c9b8" : "#5a6c55"
-                  }}>
-                    Unscented
-                  </span>
-                  <div style={{
-                    height: "3px",
-                    width: "24px",
-                    borderRadius: "999px",
-                    background: scentType === "Unscented" ? "#d4c9b8" : "transparent",
-                    transition: "all 0.3s"
-                  }}></div>
-                </div>
 
-                {/* Scented Card */}
-                <div
-                  onClick={() => setScentType("Scented")}
-                  style={{
-                    cursor: "pointer",
-                    position: "relative",
-                    padding: "12px", // Match Add to Cart padding
-                    borderRadius: "12px", // Match Add to Cart radius
-                    border: scentType === "Scented" ? "2px solid #4a6741" : "2px solid #e5e0d7",
-                    background: scentType === "Scented" ? "#4a6741" : "#fcfbf9",
-                    transition: "all 0.3s ease",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "2px",
-                    transform: scentType === "Scented" ? "scale(1.02)" : "scale(1)",
-                    boxShadow: scentType === "Scented" ? "0 4px 12px rgba(74, 103, 65, 0.2)" : "none",
-                    // Removed fixed height
-                  }}
-                  onMouseEnter={(e) => {
-                    if (scentType !== "Scented") {
-                      e.currentTarget.style.borderColor = "#4a6741";
-                      e.currentTarget.style.background = "#f4f7f3";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (scentType !== "Scented") {
-                      e.currentTarget.style.borderColor = "#e5e0d7";
-                      e.currentTarget.style.background = "#fcfbf9";
-                    }
-                  }}
-                >
-                  <span style={{
-                    fontSize: "14px", // Match Add to Cart font size
-                    fontWeight: "bold", // Match Add to Cart weight
-                    color: scentType === "Scented" ? "#d4c9b8" : "#5a6c55"
-                  }}>
-                    Scented
-                  </span>
-                  <span style={{
-                    fontSize: "11px",
-                    fontFamily: "serif",
-                    fontStyle: "italic",
-                    color: scentType === "Scented" ? "#e8f5e9" : "#4a6741",
-                    marginTop: "0px"
-                  }}>
-                    + Rs 100
-                  </span>
+              {/* Unscented Quantity */}
+              <div style={{
+                padding: "20px",
+                borderRadius: "14px",
+                border: unscentedQty > 0 ? "2px solid #4a6741" : "2px solid #e5e0d7",
+                background: unscentedQty > 0 ? "#f4f7f3" : "#fcfbf9",
+                marginBottom: "16px",
+                transition: "all 0.3s ease",
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>
+                    <div style={{ fontSize: "15px", fontWeight: "700", color: "#3a5231", marginBottom: "4px" }}>🕯️ Unscented Candles</div>
+                    <div style={{ fontSize: "13px", color: "#8c9688", fontWeight: "500" }}>Rs {product.price.toLocaleString()} per candle</div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
+                    <button
+                      onClick={() => setUnscentedQty(Math.max(0, unscentedQty - 1))}
+                      style={{
+                        width: "38px",
+                        height: "38px",
+                        borderRadius: "10px 0 0 10px",
+                        border: "1.5px solid #e5e0d7",
+                        borderRight: "none",
+                        background: "#fff",
+                        color: "#4a6741",
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 0.2s",
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = '#f0f4ed'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
+                    >−</button>
+                    <div style={{
+                      width: "48px",
+                      height: "38px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "16px",
+                      fontWeight: "800",
+                      color: "#3a5231",
+                      borderTop: "1.5px solid #e5e0d7",
+                      borderBottom: "1.5px solid #e5e0d7",
+                      background: "#faf9f6",
+                    }}>{unscentedQty}</div>
+                    <button
+                      onClick={() => setUnscentedQty(unscentedQty + 1)}
+                      style={{
+                        width: "38px",
+                        height: "38px",
+                        borderRadius: "0 10px 10px 0",
+                        border: "1.5px solid #e5e0d7",
+                        borderLeft: "none",
+                        background: "#fff",
+                        color: "#4a6741",
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 0.2s",
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = '#f0f4ed'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
+                    >+</button>
+                  </div>
                 </div>
               </div>
 
-              {/* Fragrance Dropdown (Animated) */}
+              {/* Scented Quantity */}
               <div style={{
-                transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-                maxHeight: scentType === "Scented" ? "128px" : "0",
-                opacity: scentType === "Scented" ? 1 : 0,
-                marginBottom: scentType === "Scented" ? "32px" : "0",
-                overflow: "hidden"
+                padding: "20px",
+                borderRadius: "14px",
+                border: scentedQty > 0 ? "2px solid #4a6741" : "2px solid #e5e0d7",
+                background: scentedQty > 0 ? "#f4f7f3" : "#fcfbf9",
+                marginBottom: "16px",
+                transition: "all 0.3s ease",
               }}>
-                <label style={{
-                  display: "block",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                  color: "#3a5231",
-                  marginBottom: "12px",
-                  marginLeft: "4px",
-                  fontFamily: "serif"
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>
+                    <div style={{ fontSize: "15px", fontWeight: "700", color: "#3a5231", marginBottom: "4px" }}>🌸 Scented Candles</div>
+                    <div style={{ fontSize: "13px", color: "#8c9688", fontWeight: "500" }}>Rs {(product.price + 100).toLocaleString()} per candle</div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
+                    <button
+                      onClick={() => setScentedQty(Math.max(0, scentedQty - 1))}
+                      style={{
+                        width: "38px",
+                        height: "38px",
+                        borderRadius: "10px 0 0 10px",
+                        border: "1.5px solid #e5e0d7",
+                        borderRight: "none",
+                        background: "#fff",
+                        color: "#4a6741",
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 0.2s",
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = '#f0f4ed'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
+                    >−</button>
+                    <div style={{
+                      width: "48px",
+                      height: "38px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "16px",
+                      fontWeight: "800",
+                      color: "#3a5231",
+                      borderTop: "1.5px solid #e5e0d7",
+                      borderBottom: "1.5px solid #e5e0d7",
+                      background: "#faf9f6",
+                    }}>{scentedQty}</div>
+                    <button
+                      onClick={() => setScentedQty(scentedQty + 1)}
+                      style={{
+                        width: "38px",
+                        height: "38px",
+                        borderRadius: "0 10px 10px 0",
+                        border: "1.5px solid #e5e0d7",
+                        borderLeft: "none",
+                        background: "#fff",
+                        color: "#4a6741",
+                        fontSize: "20px",
+                        fontWeight: "700",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition: "all 0.2s",
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = '#f0f4ed'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
+                    >+</button>
+                  </div>
+                </div>
+
+                {/* Fragrance Dropdown (Animated, shown when scentedQty > 0) */}
+                <div style={{
+                  transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                  maxHeight: scentedQty > 0 ? "100px" : "0",
+                  opacity: scentedQty > 0 ? 1 : 0,
+                  marginTop: scentedQty > 0 ? "16px" : "0",
+                  overflow: "hidden",
                 }}>
-                  Select Fragrance
-                </label>
-                <div style={{ position: "relative" }}>
+                  <label style={{ display: "block", fontSize: "13px", fontWeight: "700", color: "#3a5231", marginBottom: "8px" }}>
+                    Select Fragrance
+                  </label>
                   <select
                     value={selectedScent}
                     onChange={(e) => setSelectedScent(e.target.value)}
                     style={{
                       width: "100%",
-                      padding: "16px 20px",
-                      border: "2px solid #e5e0d7",
-                      borderRadius: "12px",
-                      background: "#fcfbf9",
+                      padding: "12px 16px",
+                      border: "1.5px solid #e5e0d7",
+                      borderRadius: "10px",
+                      background: "#fff",
                       cursor: "pointer",
                       color: "#2d3a26",
-                      fontSize: "16px",
+                      fontSize: "14px",
                       fontWeight: "500",
                       outline: "none",
-                      boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                     }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = "#4a6741";
-                      e.target.style.boxShadow = "0 0 0 1px #4a6741";
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = "#e5e0d7";
-                      e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)";
-                    }}
+                    onFocus={(e) => { e.target.style.borderColor = "#4a6741"; }}
+                    onBlur={(e) => { e.target.style.borderColor = "#e5e0d7"; }}
                   >
-                    <option value="Lavender">Lavender</option>
-                    <option value="Rose">Rose</option>
-                    <option value="Cinnamon">Cinnamon</option>
-                    <option value="Rani">Rani</option>
+                    <option value="Lavender">🪻 Lavender</option>
+                    <option value="Rose">🌹 Rose</option>
+                    <option value="Cinnamon">🫚 Cinnamon</option>
+                    <option value="Rani">🌺 Rani</option>
                   </select>
                 </div>
+              </div>
+
+              {/* Total Candles Summary */}
+              <div style={{
+                padding: "16px 20px",
+                borderRadius: "14px",
+                background: totalQty > 0 ? "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)" : "#f0ece5",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "24px",
+                transition: "all 0.3s ease",
+              }}>
+                <div>
+                  <div style={{ fontSize: "13px", fontWeight: "600", color: totalQty > 0 ? "rgba(212,201,184,0.7)" : "#8c9688", textTransform: "uppercase", letterSpacing: "0.05em" }}>Total Candles</div>
+                  <div style={{ fontSize: "28px", fontWeight: "800", color: totalQty > 0 ? "#d4c9b8" : "#3a5231", lineHeight: 1.2 }}>{totalQty}</div>
+                </div>
+                {totalQty > 0 && (
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: "12px", color: "rgba(212,201,184,0.6)", fontWeight: "500", marginBottom: "2px" }}>
+                      {unscentedQty > 0 && `${unscentedQty} unscented`}
+                      {unscentedQty > 0 && scentedQty > 0 && " · "}
+                      {scentedQty > 0 && `${scentedQty} scented`}
+                    </div>
+                    <div style={{ fontSize: "12px", color: "rgba(212,201,184,0.6)", fontWeight: "500" }}>
+                      {scentedQty > 0 && `Fragrance: ${selectedScent}`}
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Total Price Display */}
@@ -598,12 +652,12 @@ const ProductDetail = () => {
                 display: "flex",
                 alignItems: "flex-end",
                 justifyContent: "space-between",
-                paddingTop: "24px",
+                paddingTop: "20px",
                 borderTop: "1px solid #e5e0d7"
               }}>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <span style={{
-                    fontSize: "14px",
+                    fontSize: "13px",
                     color: "#8c9688",
                     fontWeight: "500",
                     textTransform: "uppercase",
@@ -611,488 +665,977 @@ const ProductDetail = () => {
                     marginBottom: "4px"
                   }}>Total Price</span>
                   <span style={{
-                    fontSize: "36px",
+                    fontSize: "32px",
                     fontFamily: "serif",
                     fontWeight: "bold",
                     color: "#2d3a26",
                     lineHeight: "1"
                   }}>
-                    Rs {scentType === "Scented" ? (product.price + 100).toLocaleString() : product.price.toLocaleString()}
+                    Rs {((unscentedQty * product.price) + (scentedQty * (product.price + 100))).toLocaleString()}
                   </span>
                 </div>
-                <div style={{
-                  padding: "4px 12px",
-                  borderRadius: "999px",
-                  fontSize: "12px",
-                  fontWeight: "bold",
-                  background: scentType === "Scented" ? "#edf5ea" : "#f3f4f6",
-                  color: scentType === "Scented" ? "#4a6741" : "#6b7280",
-                  transition: "all 0.3s"
-                }}>
-                  {scentType === "Scented" ? "Premium Selection" : "Standard Selection"}
-                </div>
+                {totalQty > 0 && (
+                  <div style={{
+                    padding: "4px 12px",
+                    borderRadius: "999px",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    background: "#edf5ea",
+                    color: "#4a6741",
+                  }}>
+                    {totalQty} {totalQty === 1 ? 'candle' : 'candles'}
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Add to Cart Button */}
             <div style={{ display: "flex", gap: "16px", marginBottom: "32px", marginTop: "16px" }}>
-  <button
-    onClick={() => {
-      // Construct the item name with scent details
-      const itemDetails = scentType === "Scented" 
-        ? `${product.name} (Scented: ${selectedScent})`
-        : `${product.name} (Unscented)`;
-      
-      const finalPrice = scentType === "Scented" ? product.price + 100 : product.price;
+              <button
+                onClick={() => {
+                  if (totalQty === 0) return;
+                  // Add unscented candles to cart
+                  if (unscentedQty > 0) {
+                    addToCart({
+                      productId: product._id,
+                      name: `${product.name} (Unscented)`,
+                      price: product.price,
+                      image_url: product.image_url || product.image || "",
+                      quantity: unscentedQty,
+                    });
+                  }
+                  // Add scented candles to cart
+                  if (scentedQty > 0) {
+                    addToCart({
+                      productId: product._id + `-scented-${selectedScent.toLowerCase()}`,
+                      name: `${product.name} (Scented: ${selectedScent})`,
+                      price: product.price + 100,
+                      image_url: product.image_url || product.image || "",
+                      quantity: scentedQty,
+                    });
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  background: totalQty === 0 ? "#e5e0d7" : "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
+                  color: totalQty === 0 ? "#8c9688" : "#d4c9b8",
+                  padding: "12px",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  border: "none",
+                  borderRadius: "12px",
+                  cursor: totalQty === 0 ? "not-allowed" : "pointer",
+                  boxShadow: totalQty === 0 ? "none" : "0 4px 10px rgba(74, 103, 65, 0.3)",
+                  transition: "all 0.3s ease",
+                  opacity: totalQty === 0 ? 0.7 : 1,
+                }}
+                onMouseEnter={(e) => {
+                  if (totalQty > 0) {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = "0 8px 20px rgba(74, 103, 65, 0.4)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = totalQty === 0 ? "none" : "0 4px 10px rgba(74, 103, 65, 0.3)";
+                }}
+              >
+                🛒 {totalQty === 0 ? 'Select Quantity' : `Add ${totalQty} ${totalQty === 1 ? 'Candle' : 'Candles'} to Cart`}
+              </button>
 
-      addToCart({
-        productId: product._id,
-        name: itemDetails, // Pass the customized name
-        price: finalPrice,
-        image_url: product.image_url || product.image || "",
-        quantity: 1,
-      });
-    }}
-    style={{
-      flex: 1,
-      background: "linear-gradient(135deg, #4a6741 0%, #3a5231 100%)",
-      color: "#d4c9b8",
-      padding: "12px",
-      fontSize: "14px",
-      fontWeight: "bold",
-      border: "none",
-      borderRadius: "12px",
-      cursor: "pointer",
-      boxShadow: "0 4px 10px rgba(74, 103, 65, 0.3)",
-      transition: "all 0.3s ease"
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = "translateY(-4px)";
-      e.currentTarget.style.boxShadow = "0 8px 20px rgba(74, 103, 65, 0.4)";
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = "translateY(0)";
-      e.currentTarget.style.boxShadow = "0 4px 10px rgba(74, 103, 65, 0.3)";
-    }}
-  >
-    🛒 Add to Cart
-  </button>
-
-  <button
-    onClick={() => navigate("/cart")}
-    style={{
-      flex: 1,
-      background: "#ef4444",
-      color: "white",
-      padding: "12px",
-      fontSize: "14px",
-      fontWeight: "bold",
-      border: "none",
-      borderRadius: "12px",
-      cursor: "pointer",
-      boxShadow: "0 4px 10px rgba(239, 68, 68, 0.3)",
-      transition: "all 0.3s ease"
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.transform = "translateY(-4px)";
-      e.currentTarget.style.boxShadow = "0 8px 20px rgba(239, 68, 68, 0.4)";
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = "translateY(0)";
-      e.currentTarget.style.boxShadow = "0 4px 10px rgba(239, 68, 68, 0.3)";
-    }}
-  >
-    ⚡ Buy Now
-  </button>
-</div>
+              <button
+                onClick={() => navigate("/cart")}
+                style={{
+                  flex: 1,
+                  background: "#ef4444",
+                  color: "white",
+                  padding: "12px",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  border: "none",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 10px rgba(239, 68, 68, 0.3)",
+                  transition: "all 0.3s ease"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow = "0 8px 20px rgba(239, 68, 68, 0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 4px 10px rgba(239, 68, 68, 0.3)";
+                }}
+              >
+                ⚡ Buy Now
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Reviews Section */}
-        <div className="mt-12 bg-white rounded-xl shadow-sm border border-[#e5e0d7] p-8">
-          {/* Section Header with Controls */}
-          <div className="flex justify-between items-center border-b border-gray-100 pb-6 mb-8">
-            <div>
-              <h2 className="text-2xl font-bold text-[#3a5231]">Product Reviews</h2>
-              <p className="text-sm text-gray-500 mt-1">{reviews.length} verified reviews from real customers</p>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              {/* Sort Dropdown */}
-              <div className="flex items-center group cursor-pointer hover:opacity-80 transition-opacity">
-                <span className="text-gray-500 text-sm mr-2">Sort:</span>
-                <div className="relative">
-                  <select 
-                    className="bg-white border border-gray-300 text-gray-900 text-sm font-semibold px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#4a6741] focus:border-transparent cursor-pointer"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
-                  >
-                    <option value="relevance">Most Relevant</option>
-                    <option value="newest">Newest</option>
-                    <option value="rating_desc">Highest Rating</option>
-                    <option value="rating_asc">Lowest Rating</option>
-                  </select>
-                </div>
-              </div>
+        {/* Reviews Section - Modern Premium Design */}
+        <div style={{
+          marginTop: '80px',
+          background: 'linear-gradient(135deg, #faf9f6 0%, #f5f2ed 100%)',
+          borderRadius: '24px',
+          padding: '0',
+          boxShadow: '0 4px 24px rgba(26, 71, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)',
+          border: '1px solid #e5e0d7',
+          overflow: 'hidden',
+        }}>
 
-              {/* Filter Dropdown */}
-              <div className="flex items-center group cursor-pointer hover:opacity-80 transition-opacity">
-                <span className="text-gray-500 text-sm mr-2">Rating:</span>
-                <div className="relative">
-                  <select 
-                    className="bg-white border border-gray-300 text-gray-900 text-sm font-semibold px-3 py-2 rounded-lg focus:ring-2 focus:ring-[#4a6741] focus:border-transparent cursor-pointer"
-                    value={filterStar}
-                    onChange={(e) => setFilterStar(e.target.value === "all" ? "all" : Number(e.target.value))}
-                  >
-                    <option value="all">All Ratings</option>
-                    <option value="5">⭐ 5 Stars</option>
-                    <option value="4">⭐⭐⭐⭐ (4+)</option>
-                    <option value="3">⭐⭐⭐ (3+)</option>
-                    <option value="2">⭐⭐ (2+)</option>
-                    <option value="1">⭐ (1+)</option>
-                  </select>
-                </div>
+          {/* Section Header */}
+          <div style={{
+            background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+            padding: '24px 36px',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            {/* Decorative circles */}
+            <div style={{ position: 'absolute', top: '-40px', right: '-20px', width: '160px', height: '160px', borderRadius: '50%', background: 'rgba(212, 201, 184, 0.08)' }}></div>
+            <div style={{ position: 'absolute', bottom: '-60px', right: '100px', width: '120px', height: '120px', borderRadius: '50%', background: 'rgba(212, 201, 184, 0.06)' }}></div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', position: 'relative', zIndex: 1 }}>
+              <div>
+                <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#d4c9b8', margin: '0 0 4px 0', letterSpacing: '-0.02em' }}>Customer Reviews</h2>
+                <p style={{ fontSize: '13px', color: 'rgba(212, 201, 184, 0.65)', margin: 0, fontWeight: '500' }}>
+                  See what our customers have to say
+                </p>
               </div>
+              {!showReviewForm && (
+                <button
+                  onClick={() => setShowReviewForm(true)}
+                  style={{
+                    background: 'rgba(212, 201, 184, 0.15)',
+                    backdropFilter: 'blur(12px)',
+                    color: '#d4c9b8',
+                    padding: '14px 32px',
+                    borderRadius: '14px',
+                    fontWeight: '700',
+                    fontSize: '15px',
+                    border: '1px solid rgba(212, 201, 184, 0.3)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(212, 201, 184, 0.25)';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(58, 82, 49, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(212, 201, 184, 0.15)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <span style={{ fontSize: '18px' }}>✍️</span> Write a Review
+                </button>
+              )}
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-12">
-            {/* Left: Rating Summary & Histogram */}
-            <div className="flex-shrink-0 w-full lg:w-72">
-              <div className="bg-gradient-to-br from-[#f4f7f3] to-white rounded-xl p-8 border border-[#e5e0d7] sticky top-24">
-                {/* Average Rating Card */}
-                <div className="flex flex-col mb-6">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-bold text-[#3a5231]">{averageRating}</span>
-                    <span className="text-xs text-gray-500 font-medium">out of 5</span>
-                  </div>
-                  <div className="flex gap-1 mt-1">
-                      {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            size={16}
-                            className={i < Math.round(Number(averageRating)) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}
-                          />
-                      ))}
-                  </div>
+          {/* Content Area */}
+          <div style={{ padding: '40px 48px' }}>
+
+            {/* Rating Overview - Two Column */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '280px 1fr',
+              gap: '40px',
+              marginBottom: '40px',
+              padding: '32px',
+              background: '#fff',
+              borderRadius: '20px',
+              border: '1px solid #e5e0d7',
+              boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
+            }}>
+              {/* Left - Average Score */}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRight: '1px solid #e5e0d7',
+                paddingRight: '40px',
+              }}>
+                <div style={{ fontSize: '56px', fontWeight: '800', color: '#4a6741', lineHeight: 1, letterSpacing: '-0.03em' }}>
+                  {averageRating}
                 </div>
-                
-                {/* Star Distribution Histogram */}
-                <div className="space-y-3.5 mb-8 pb-8 border-b border-gray-200">
-                  {[5, 4, 3, 2, 1].map((star) => {
-                    const count = starCounts[star] || 0;
-                    const percent = reviews.length > 0 ? (count / reviews.length) * 100 : 0;
-                    return (
-                      <div 
-                        key={star} 
-                        className="flex items-center gap-3 text-xs cursor-pointer hover:opacity-70 transition-opacity group"
-                        onClick={() => setFilterStar(star)}
-                        role="button"
-                        tabIndex={0}
-                      >
-                        <span className="w-6 text-gray-600 font-semibold whitespace-nowrap">{star}★</span>
-                        <div className="flex-grow h-2.5 bg-gray-200 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-gradient-to-r from-[#4a6741] to-[#5a7c52] rounded-full transition-all duration-300"
-                            style={{ width: `${percent}%` }}
-                          ></div>
-                        </div>
-                        <span className="w-12 text-right text-gray-400 font-medium">{count}</span>
+                <div style={{ display: 'flex', gap: '3px', margin: '12px 0 8px' }}>
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={22} style={i < Math.round(Number(averageRating)) ? { color: '#c9972b', fill: '#c9972b' } : { color: '#d4c9b8', fill: 'none' }} />
+                  ))}
+                </div>
+                <span style={{ fontSize: '14px', color: '#8c9688', fontWeight: '600' }}>
+                  {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
+                </span>
+              </div>
+
+              {/* Right - Star Distribution */}
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '10px' }}>
+                {[5, 4, 3, 2, 1].map((star) => {
+                  const count = starCounts[star] || 0;
+                  const percentage = reviews.length > 0 ? (count / reviews.length) * 100 : 0;
+                  return (
+                    <div
+                      key={star}
+                      onClick={() => setFilterStar(star === filterStar ? "all" : star)}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '50px 1fr 44px',
+                        alignItems: 'center',
+                        gap: '12px',
+                        cursor: 'pointer',
+                        padding: '4px 8px',
+                        borderRadius: '8px',
+                        transition: 'background 0.2s',
+                        background: filterStar === star ? '#f0fdf4' : 'transparent',
+                      }}
+                      onMouseEnter={(e) => { if (filterStar !== star) e.currentTarget.style.background = '#faf9f6'; }}
+                      onMouseLeave={(e) => { if (filterStar !== star) e.currentTarget.style.background = 'transparent'; }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '14px', fontWeight: '600', color: '#1a472a' }}>
+                        {star} <Star size={14} style={{ color: '#c9972b', fill: '#c9972b' }} />
                       </div>
-                    );
-                  })}
-                </div>
-                
-                {/* Write Review Button */}
-                {!showReviewForm && (
-                  <button
-                    onClick={() => setShowReviewForm(true)}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-[#4a6741] to-[#3a5231] text-white font-bold rounded-lg hover:shadow-lg transition-all duration-300 text-sm shadow-md inline-flex items-center justify-center gap-2"
-                  >
-                    <span>✏️</span> Write a Review
-                  </button>
-                )}
+                      <div style={{ height: '10px', borderRadius: '999px', background: '#f0ece5', overflow: 'hidden' }}>
+                        <div style={{
+                          height: '100%',
+                          width: `${percentage}%`,
+                          borderRadius: '999px',
+                          background: 'linear-gradient(90deg, #4a6741, #6b8e6f)',
+                          transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                          minWidth: percentage > 0 ? '8px' : '0',
+                        }}></div>
+                      </div>
+                      <span style={{ fontSize: '13px', fontWeight: '600', color: '#8c9688', textAlign: 'right' }}>
+                        {count}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Right: Reviews List */}
-            <div className="flex-grow">
-              
-              {/* Review Form */}
-              {showReviewForm && (
-                <form
-                  onSubmit={handleAddReview}
-                  className="bg-gradient-to-br from-[#f9f8f7] to-white rounded-xl p-6 mb-8 border-2 border-[#4a6741] animate-in fade-in slide-in-from-top-4 duration-300"
+            {/* Filter & Sort Bar */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '16px',
+              marginBottom: '32px',
+            }}>
+              {/* Star Filter Pills */}
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => setFilterStar("all")}
+                  style={{
+                    padding: '8px 20px',
+                    borderRadius: '999px',
+                    fontSize: '13px',
+                    fontWeight: '700',
+                    border: 'none',
+                    cursor: 'pointer',
+                    transition: 'all 0.25s ease',
+                    background: filterStar === "all" ? '#4a6741' : '#fff',
+                    color: filterStar === "all" ? '#d4c9b8' : '#5a6c55',
+                    boxShadow: filterStar === "all" ? '0 4px 12px rgba(74, 103, 65, 0.3)' : '0 1px 4px rgba(0,0,0,0.06)',
+                  }}
                 >
-                  <div className="flex justify-between items-center mb-6">
-                     <h4 className="font-bold text-lg text-gray-800 flex items-center gap-2">
-                       <span>✍️</span> Share Your Experience
-                     </h4>
-                     <button type="button" onClick={() => setShowReviewForm(false)} className="text-gray-400 hover:text-gray-600 font-bold">✕</button>
+                  All
+                </button>
+                {[5, 4, 3, 2, 1].map((star) => (
+                  <button
+                    key={star}
+                    onClick={() => setFilterStar(star === filterStar ? "all" : star)}
+                    style={{
+                      padding: '8px 18px',
+                      borderRadius: '999px',
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s ease',
+                      background: filterStar === star ? '#4a6741' : '#fff',
+                      color: filterStar === star ? '#d4c9b8' : '#5a6c55',
+                      boxShadow: filterStar === star ? '0 4px 12px rgba(74, 103, 65, 0.3)' : '0 1px 4px rgba(0,0,0,0.06)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                    }}
+                  >
+                    {star} <Star size={13} style={filterStar === star ? { color: '#d4c9b8', fill: '#d4c9b8' } : { color: '#c9972b', fill: '#c9972b' }} />
+                  </button>
+                ))}
+              </div>
+
+              {/* Sort Dropdown */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                style={{
+                  padding: '10px 36px 10px 16px',
+                  borderRadius: '12px',
+                  border: '1px solid #e5e0d7',
+                  background: '#fff',
+                  color: '#1a472a',
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  outline: 'none',
+                  appearance: 'none',
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231a472a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 14px center',
+                }}
+              >
+                <option value="relevance">Most Relevant</option>
+                <option value="newest">Newest First</option>
+                <option value="rating_desc">Highest Rated</option>
+                <option value="rating_asc">Lowest Rated</option>
+              </select>
+            </div>
+
+            {/* Review Form */}
+            {showReviewForm && (
+              <div style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #faf9f6 100%)',
+                padding: '36px',
+                borderRadius: '20px',
+                border: '1px solid #e5e0d7',
+                marginBottom: '40px',
+                boxShadow: '0 8px 32px rgba(26, 71, 42, 0.08)',
+                animation: 'reviewFormSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px' }}>
+                  <div>
+                    <h3 style={{ fontSize: '22px', fontWeight: '800', color: '#1a472a', margin: '0' }}>Share Your Experience</h3>
+                    <p style={{ fontSize: '14px', color: '#8c9688', margin: '4px 0 0 0' }}>Your review helps others make better choices</p>
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <button
+                    onClick={() => setShowReviewForm(false)}
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '12px',
+                      border: '1px solid #e5e0d7',
+                      background: '#faf9f6',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'all 0.2s',
+                      color: '#8c9688',
+                      fontSize: '18px',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = '#e5e0d7'; e.currentTarget.style.color = '#3a5231'; e.currentTarget.style.borderColor = '#c4d3b9'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = '#faf9f6'; e.currentTarget.style.color = '#8c9688'; e.currentTarget.style.borderColor = '#e5e0d7'; }}
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <form onSubmit={handleAddReview}>
+                  {/* Rating Selection */}
+                  <div style={{ marginBottom: '28px', textAlign: 'center', padding: '24px', background: '#faf9f6', borderRadius: '16px', border: '1px solid #f0ece5' }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '700', color: '#1a472a', marginBottom: '12px' }}>How would you rate this product?</label>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setReviewForm(prev => ({ ...prev, rating: star }))}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: '4px',
+                            transition: 'transform 0.2s',
+                          }}
+                          onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.2)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+                        >
+                          <Star
+                            size={36}
+                            style={star <= reviewForm.rating ? { color: '#c9972b', fill: '#c9972b' } : { color: '#d4c9b8', fill: 'none' }}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                    <span style={{ fontSize: '13px', color: '#8c9688', marginTop: '8px', display: 'block' }}>
+                      {reviewForm.rating === 5 ? '🌟 Excellent!' : reviewForm.rating === 4 ? '😊 Very Good' : reviewForm.rating === 3 ? '😐 Average' : reviewForm.rating === 2 ? '😕 Below Average' : '😞 Poor'}
+                    </span>
+                  </div>
+
+                  {/* Name & Comment */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
                     <div>
-                      <label className="block text-sm font-bold mb-2 text-gray-700">Your Name</label>
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#1a472a', marginBottom: '8px' }}>Your Name</label>
                       <input
                         type="text"
-                        placeholder="e.g. Sarah J."
                         value={reviewForm.reviewer}
                         onChange={(e) => setReviewForm({ ...reviewForm, reviewer: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a6741] focus:border-transparent bg-white"
+                        placeholder="Enter your name"
+                        style={{
+                          width: '100%',
+                          padding: '14px 18px',
+                          borderRadius: '12px',
+                          border: '1px solid #e5e0d7',
+                          background: '#fff',
+                          fontSize: '14px',
+                          color: '#1a472a',
+                          outline: 'none',
+                          transition: 'border-color 0.2s, box-shadow 0.2s',
+                          boxSizing: 'border-box',
+                        }}
+                        onFocus={(e) => { e.target.style.borderColor = '#4a6741'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 103, 65, 0.1)'; }}
+                        onBlur={(e) => { e.target.style.borderColor = '#e5e0d7'; e.target.style.boxShadow = 'none'; }}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold mb-2 text-gray-700">Your Rating</label>
-                      <div className="flex gap-2">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <button
-                            key={star}
-                            type="button"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setReviewForm(prev => ({ ...prev, rating: star }));
-                            }}
-                            className="focus:outline-none transition-all hover:scale-125 active:scale-95"
-                          >
-                            <Star
-                              size={36}
-                              className={star <= reviewForm.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}
-                            />
-                          </button>
-                        ))}
+                      <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#1a472a', marginBottom: '8px' }}>Photo (Optional)</label>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <label style={{
+                          cursor: 'pointer',
+                          padding: '14px 22px',
+                          borderRadius: '12px',
+                          border: '1px dashed #c4d3b9',
+                          background: '#f8faf7',
+                          color: '#4a6741',
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          transition: 'all 0.2s',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          flex: 1,
+                          justifyContent: 'center',
+                        }}>
+                          📸 Upload Photo
+                          <input type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
+                        </label>
+                        {reviewForm.image && (
+                          <div style={{ position: 'relative' }}>
+                            <img src={reviewForm.image} alt="Preview" style={{ height: '48px', width: '48px', objectFit: 'cover', borderRadius: '10px', border: '1px solid #e5e0d7' }} />
+                            <button
+                              type="button"
+                              onClick={() => setReviewForm(prev => ({ ...prev, image: "" }))}
+                              style={{ position: 'absolute', top: '-6px', right: '-6px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: '50%', width: '20px', height: '20px', fontSize: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >✕</button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  <div className="mb-6">
-                    <label className="block text-sm font-bold mb-2 text-gray-700">Your Review</label>
+                  <div style={{ marginBottom: '24px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: '#1a472a', marginBottom: '8px' }}>Your Review</label>
                     <textarea
-                      placeholder="What did you like or dislike? Share helpful details..."
+                      rows={4}
                       value={reviewForm.comment}
                       onChange={(e) => setReviewForm({ ...reviewForm, comment: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4a6741] focus:border-transparent bg-white resize-none"
-                      rows={4}
-                      required
+                      placeholder="Tell us about your experience with this product..."
+                      style={{
+                        width: '100%',
+                        padding: '14px 18px',
+                        borderRadius: '12px',
+                        border: '1px solid #e5e0d7',
+                        background: '#fff',
+                        fontSize: '14px',
+                        color: '#1a472a',
+                        outline: 'none',
+                        resize: 'none',
+                        transition: 'border-color 0.2s, box-shadow 0.2s',
+                        lineHeight: '1.6',
+                        boxSizing: 'border-box',
+                      }}
+                      onFocus={(e) => { e.target.style.borderColor = '#4a6741'; e.target.style.boxShadow = '0 0 0 3px rgba(74, 103, 65, 0.1)'; }}
+                      onBlur={(e) => { e.target.style.borderColor = '#e5e0d7'; e.target.style.boxShadow = 'none'; }}
                     />
                   </div>
 
-                  <div className="mb-6">
-                    <label className="block text-sm font-bold mb-2 text-gray-700">📸 Add Photos (Optional)</label>
-                    <div className="flex items-center gap-4">
-                      <label className="cursor-pointer bg-white border-2 border-dashed border-gray-300 hover:border-[#4a6741] hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-lg shadow-sm transition-all duration-200">
-                        Choose File
-                        <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
-                      </label>
-                      {reviewForm.image && (
-                        <div className="relative inline-block group">
-                           <img src={reviewForm.image} alt="Preview" className="h-16 w-16 object-cover rounded-lg border-2 border-[#4a6741] shadow-md" />
-                           <button type="button" onClick={() => setReviewForm(prev => ({...prev, image: ""}))} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity shadow-lg font-bold">✕</button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-3">
+                  {/* Form Actions */}
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', paddingTop: '20px', borderTop: '1px solid #f0ece5' }}>
                     <button
                       type="button"
                       onClick={() => setShowReviewForm(false)}
-                      className="bg-white border border-gray-300 text-gray-700 font-bold py-3 px-8 rounded-lg hover:bg-gray-50 transition-colors"
+                      style={{
+                        padding: '12px 28px',
+                        borderRadius: '12px',
+                        border: '1px solid #e5e0d7',
+                        background: '#fff',
+                        color: '#8c9688',
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = '#faf9f6'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={submittingReview}
-                      className="bg-gradient-to-r from-[#4a6741] to-[#3a5231] text-white font-bold py-3 px-8 rounded-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md"
+                      style={{
+                        padding: '12px 36px',
+                        borderRadius: '12px',
+                        border: 'none',
+                        background: submittingReview ? '#8c9688' : 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                        color: '#fff',
+                        fontWeight: '700',
+                        fontSize: '14px',
+                        cursor: submittingReview ? 'not-allowed' : 'pointer',
+                        transition: 'all 0.3s',
+                        boxShadow: '0 4px 12px rgba(74, 103, 65, 0.25)',
+                      }}
+                      onMouseEnter={(e) => { if (!submittingReview) { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(74, 103, 65, 0.35)'; } }}
+                      onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(74, 103, 65, 0.25)'; }}
                     >
-                      {submittingReview ? "⏳ Submitting..." : "✓ Submit Review"}
+                      {submittingReview ? "Posting..." : "✨ Submit Review"}
                     </button>
                   </div>
                 </form>
-              )}
+              </div>
+            )}
 
-              {/* Reviews List */}
-              <div className="space-y-6">
-                {sortedAndFilteredReviews.length > 0 ? (
-                  sortedAndFilteredReviews.map((review) => {
-                    const reviewId = review._id || review.id || "";
-                    const helpfulStatus = helpfulReviews[reviewId];
-                    
-                    return (
-                      <div
-                        key={reviewId}
-                        className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all duration-300 bg-white hover:bg-gradient-to-br hover:from-white hover:to-[#f9f8f7]"
-                      >
-                        <div className="flex gap-4 items-start">
-                          {/* Avatar */}
-                          <div className="flex-shrink-0">
-                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#4a6741] to-[#3a5231] flex items-center justify-center text-white font-bold text-lg shadow-md">
-                              {review.reviewer?.charAt(0).toUpperCase() || "A"}
+            {/* Reviews List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {sortedAndFilteredReviews.length > 0 ? (
+                sortedAndFilteredReviews.map((review) => {
+                  const reviewId = review._id || review.id || "";
+                  const helpfulStatus = helpfulReviews[reviewId];
+                  return (
+                    <div
+                      key={reviewId}
+                      style={{
+                        background: '#fff',
+                        borderRadius: '18px',
+                        border: '1px solid #e5e0d7',
+                        padding: '28px 32px',
+                        transition: 'all 0.3s ease',
+                        cursor: 'default',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = '0 8px 28px rgba(26, 71, 42, 0.08)';
+                        e.currentTarget.style.borderColor = '#c4d3b9';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = 'none';
+                        e.currentTarget.style.borderColor = '#e5e0d7';
+                        e.currentTarget.style.transform = 'translateY(0)';
+                      }}
+                    >
+                      {/* Review Header */}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                        {/* Avatar */}
+                        <div style={{
+                          width: '48px',
+                          height: '48px',
+                          borderRadius: '14px',
+                          background: 'linear-gradient(135deg, #4a6741 0%, #6b8e6f 100%)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#fff',
+                          fontWeight: '700',
+                          fontSize: '18px',
+                          flexShrink: 0,
+                          boxShadow: '0 2px 8px rgba(74, 103, 65, 0.2)',
+                        }}>
+                          {review.reviewer?.charAt(0).toUpperCase() || "A"}
+                        </div>
+
+                        <div style={{ flex: 1 }}>
+                          {/* Name + Rating Row */}
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '8px' }}>
+                            <div>
+                              <h4 style={{ fontSize: '16px', fontWeight: '700', color: '#1a472a', margin: '0 0 4px 0' }}>
+                                {review.reviewer || "Anonymous"}
+                              </h4>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <div style={{ display: 'flex', gap: '2px' }}>
+                                  {[...Array(5)].map((_, i) => (
+                                    <Star key={i} size={15} style={i < review.rating ? { color: '#c9972b', fill: '#c9972b' } : { color: '#d4c9b8', fill: 'none' }} />
+                                  ))}
+                                </div>
+                                <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#ccc', display: 'inline-block' }}></span>
+                                <span style={{ fontSize: '13px', color: '#a0a8a0', fontWeight: '500' }}>
+                                  {review.createdAt
+                                    ? new Date(review.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+                                    : "Recent"}
+                                </span>
+                              </div>
+                            </div>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '5px',
+                              padding: '5px 12px',
+                              borderRadius: '999px',
+                              background: 'linear-gradient(135deg, #f0f4ed 0%, #dde5d4 100%)',
+                              fontSize: '12px',
+                              fontWeight: '700',
+                              color: '#3a5231',
+                              border: '1px solid #c4d3b9',
+                            }}>
+                              <CheckCircle size={12} /> Verified
                             </div>
                           </div>
-                          
-                          <div className="flex-grow">
-                            {/* Header Line: Rating | Name | Verification | Date */}
-                            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3">
-                               {/* Stars */}
-                               <div className="flex gap-0.5">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    size={16}
-                                    className={
-                                      i < review.rating
-                                        ? "text-yellow-400 fill-yellow-400"
-                                        : "text-gray-300"
-                                    }
-                                  />
-                                ))}
-                              </div>
-                              
-                              <span className="font-bold text-gray-900 text-sm">{review.reviewer || "Anonymous"}</span>
-                              
-                              {/* Verified Badge */}
-                              <div className="flex items-center text-[#4a6741] text-xs font-semibold gap-1 bg-green-50 px-2.5 py-1 rounded-full">
-                                 <CheckCircle size={13} className="fill-current" />
-                                 <span>Verified Purchase</span>
-                              </div>
 
-                              {/* Date */}
-                              <span className="text-xs text-gray-400 ml-auto">
-                                {review.createdAt 
-                                  ? new Date(review.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-                                  : "Recent"}
-                              </span>
+                          {/* Comment */}
+                          <p style={{
+                            marginTop: '16px',
+                            fontSize: '15px',
+                            color: '#5a6c55',
+                            lineHeight: '1.7',
+                            marginBottom: 0,
+                          }}>
+                            {review.comment}
+                          </p>
+
+                          {/* Review Image */}
+                          {review.image && (
+                            <div style={{ marginTop: '16px' }}>
+                              <img
+                                src={review.image}
+                                alt="Review"
+                                onClick={() => setSelectedImage(review.image || null)}
+                                style={{
+                                  height: '120px',
+                                  width: '120px',
+                                  objectFit: 'cover',
+                                  borderRadius: '14px',
+                                  border: '1px solid #e5e0d7',
+                                  cursor: 'pointer',
+                                  transition: 'all 0.2s ease',
+                                }}
+                                onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.85'; e.currentTarget.style.transform = 'scale(1.03)'; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1)'; }}
+                              />
                             </div>
+                          )}
 
-                            {/* Comment */}
-                            <p className="text-gray-700 text-sm leading-relaxed mb-4">{review.comment}</p>
-                            
-                            {/* Review Images */}
-                            {review.image && (
-                              <div className="flex gap-3 mb-4">
-                                <div 
-                                  className="relative h-24 w-24 cursor-pointer overflow-hidden rounded-lg border border-gray-300 hover:border-[#4a6741] transition-all hover:shadow-lg hover:-translate-y-1"
-                                  onClick={() => setSelectedImage(review.image || null)}
-                                >
-                                  <img 
-                                    src={review.image} 
-                                    alt="Review attachment" 
-                                    className="h-full w-full object-cover"
-                                  />
-                                  <div className="absolute inset-0 bg-black opacity-0 hover:opacity-10 transition-opacity flex items-center justify-center">
-                                    <span className="text-white text-xs font-semibold">👁️ View</span>
-                                  </div>
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Helpful Section */}
-                            <div className="flex items-center gap-4 pt-3 border-t border-gray-100">
-                              <span className="text-xs text-gray-500">Was this helpful?</span>
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => {
-                                    setHelpfulReviews(prev => ({
-                                      ...prev,
-                                      [reviewId]: helpfulStatus === "helpful" ? null : "helpful"
-                                    }));
-                                  }}
-                                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-                                    helpfulStatus === "helpful"
-                                      ? "bg-green-100 text-green-700"
-                                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                  }`}
-                                >
-                                  👍 Yes
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setHelpfulReviews(prev => ({
-                                      ...prev,
-                                      [reviewId]: helpfulStatus === "unhelpful" ? null : "unhelpful"
-                                    }));
-                                  }}
-                                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 ${
-                                    helpfulStatus === "unhelpful"
-                                      ? "bg-red-100 text-red-700"
-                                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                  }`}
-                                >
-                                  👎 No
-                                </button>
-                              </div>
-                            </div>
+                          {/* Helpful Actions */}
+                          <div style={{
+                            marginTop: '20px',
+                            paddingTop: '16px',
+                            borderTop: '1px solid #f0ece5',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                          }}>
+                            <span style={{ fontSize: '13px', color: '#a0a8a0', fontWeight: '500', marginRight: '4px' }}>Was this helpful?</span>
+                            <button
+                              onClick={() => setHelpfulReviews(prev => ({ ...prev, [reviewId]: helpfulStatus === "helpful" ? null : "helpful" }))}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                padding: '6px 16px',
+                                borderRadius: '999px',
+                                fontSize: '13px',
+                                fontWeight: '600',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                background: helpfulStatus === "helpful" ? '#f0f4ed' : '#f8f8f6',
+                                color: helpfulStatus === "helpful" ? '#3a5231' : '#8c9688',
+                              }}
+                              onMouseEnter={(e) => { if (helpfulStatus !== "helpful") e.currentTarget.style.background = '#f0f4ed'; }}
+                              onMouseLeave={(e) => { if (helpfulStatus !== "helpful") e.currentTarget.style.background = '#f8f8f6'; }}
+                            >
+                              👍 Yes {helpfulStatus === "helpful" ? "(1)" : ""}
+                            </button>
+                            <button
+                              onClick={() => setHelpfulReviews(prev => ({ ...prev, [reviewId]: helpfulStatus === "unhelpful" ? null : "unhelpful" }))}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                padding: '6px 16px',
+                                borderRadius: '999px',
+                                fontSize: '13px',
+                                fontWeight: '600',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                background: helpfulStatus === "unhelpful" ? '#e5e0d7' : '#f8f8f6',
+                                color: helpfulStatus === "unhelpful" ? '#3a5231' : '#8c9688',
+                              }}
+                              onMouseEnter={(e) => { if (helpfulStatus !== "unhelpful") e.currentTarget.style.background = '#f0ece5'; }}
+                              onMouseLeave={(e) => { if (helpfulStatus !== "unhelpful") e.currentTarget.style.background = '#f8f8f6'; }}
+                            >
+                              👎 No
+                            </button>
                           </div>
                         </div>
                       </div>
-                    );
-                  })
-                ) : (
-                  <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-white rounded-xl border-2 border-dashed border-gray-200">
-                    <span className="text-4xl mb-3 block">📝</span>
-                    <p className="text-gray-600 font-semibold mb-2">No reviews match your filter.</p>
-                    <p className="text-gray-400 text-sm mb-4">Try adjusting your criteria or be the first to review!</p>
-                    <button 
-                      onClick={() => {
-                        setFilterStar("all");
-                        setShowReviewForm(true);
-                      }}
-                      className="text-[#4a6741] font-bold hover:underline text-sm inline-flex items-center gap-2"
-                    >
-                      <span>✍️</span> Write First Review
-                    </button>
-                  </div>
-                )}
-              </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div style={{
+                  textAlign: 'center',
+                  padding: '64px 32px',
+                  background: '#fff',
+                  borderRadius: '20px',
+                  border: '2px dashed #e5e0d7',
+                }}>
+                  <div style={{ fontSize: '52px', marginBottom: '16px', opacity: 0.4 }}>💬</div>
+                  <h3 style={{ fontSize: '22px', fontWeight: '700', color: '#1a472a', margin: '0 0 8px 0' }}>No reviews yet</h3>
+                  <p style={{ fontSize: '15px', color: '#8c9688', margin: '0 0 24px 0' }}>Be the first to share your experience with this candle.</p>
+                  <button
+                    onClick={() => { setFilterStar("all"); setShowReviewForm(true); }}
+                    style={{
+                      background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                      color: '#fff',
+                      padding: '12px 32px',
+                      borderRadius: '12px',
+                      border: 'none',
+                      fontWeight: '700',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(74, 103, 65, 0.25)',
+                      transition: 'all 0.3s',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(74, 103, 65, 0.35)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(74, 103, 65, 0.25)'; }}
+                  >
+                    ✍️ Write the First Review
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-{/* You May Like Section – Modern Horizontal Cards */}
-{recommendedProducts.length > 0 && (
-  <div className="bg-gradient-to-r from-gray-50 to-white mt-12 py-6">
-    <div className="max-w-7xl mx-auto px-4">
-      <h2 className="text-lg font-semibold mb-4 text-gray-800 flex items-center gap-2">
-        <span className="w-1 h-5 bg-green-600 rounded-full"></span>
-        You May Like
-      </h2>
-      <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'none' }}>
-        <div className="flex gap-3">
-          {recommendedProducts.map((item) => (
-            <div
-              key={item._id}
-              onClick={() => navigate(`/products/${item._id}`)}
-              className="flex-shrink-0 cursor-pointer bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group"
-              style={{ width: '140px' }}
-            >
-              {/* Image with hover zoom */}
-              <div className="bg-gray-100 overflow-hidden" style={{ height: '90px' }}>
-                <img
-                  src={item.image_url || item.image}
-                  alt={item.name}
-                  loading="lazy"
-                  className="group-hover:scale-105 transition-transform duration-300"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://via.placeholder.com/140x90?text=No+Image';
-                  }}
-                />
+      {/* You May Like Section – Premium Redesign */}
+      {recommendedProducts.length > 0 && (
+        <div style={{
+          marginTop: '60px',
+          padding: '0 0 48px 0',
+        }}>
+          {/* Section Header */}
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 16px 32px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: '14px',
+                background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '20px',
+                boxShadow: '0 4px 12px rgba(74, 103, 65, 0.25)',
+              }}>
+                ✨
               </div>
-              {/* Name + Price */}
-              <div className="p-2">
-                <p className="text-xs text-gray-700 truncate font-medium">{item.name}</p>
-                <p className="text-sm font-bold text-green-700 mt-1">Rs {item.price?.toLocaleString()}</p>
+              <div>
+                <h2 style={{ fontSize: '22px', fontWeight: '800', color: '#3a5231', margin: 0, letterSpacing: '-0.02em' }}>
+                  You May Also Like
+                </h2>
+                <p style={{ fontSize: '13px', color: '#8c9688', margin: '2px 0 0 0', fontWeight: '500' }}>
+                  Handpicked recommendations for you
+                </p>
               </div>
             </div>
-          ))}
+            <button
+              onClick={() => navigate('/products')}
+              style={{
+                padding: '10px 24px',
+                borderRadius: '12px',
+                border: '1px solid #e5e0d7',
+                background: '#fff',
+                color: '#4a6741',
+                fontSize: '13px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#4a6741';
+                e.currentTarget.style.color = '#d4c9b8';
+                e.currentTarget.style.borderColor = '#4a6741';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(74, 103, 65, 0.25)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#fff';
+                e.currentTarget.style.color = '#4a6741';
+                e.currentTarget.style.borderColor = '#e5e0d7';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              View All →
+            </button>
+          </div>
+
+          {/* Product Cards Grid */}
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '0 16px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+            gap: '20px',
+          }}>
+            {recommendedProducts.map((item) => (
+              <div
+                key={item._id}
+                onClick={() => navigate(`/products/${item._id}`)}
+                style={{
+                  cursor: 'pointer',
+                  borderRadius: '18px',
+                  overflow: 'hidden',
+                  background: '#fff',
+                  border: '1px solid #e5e0d7',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-6px)';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(74, 103, 65, 0.15)';
+                  e.currentTarget.style.borderColor = '#c4d3b9';
+                  const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+                  if (img) img.style.transform = 'scale(1.08)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = 'none';
+                  e.currentTarget.style.borderColor = '#e5e0d7';
+                  const img = e.currentTarget.querySelector('img') as HTMLImageElement;
+                  if (img) img.style.transform = 'scale(1)';
+                }}
+              >
+                {/* Image */}
+                <div style={{
+                  height: '180px',
+                  overflow: 'hidden',
+                  background: '#f5f2ed',
+                  position: 'relative',
+                }}>
+                  <img
+                    src={item.image_url || item.image}
+                    alt={item.name}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      transition: 'transform 0.4s ease',
+                    }}
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://via.placeholder.com/200x180?text=No+Image';
+                    }}
+                  />
+                  {/* Price Badge */}
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '10px',
+                    right: '10px',
+                    background: 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                    color: '#d4c9b8',
+                    padding: '6px 14px',
+                    borderRadius: '10px',
+                    fontSize: '13px',
+                    fontWeight: '700',
+                    boxShadow: '0 4px 12px rgba(58, 82, 49, 0.35)',
+                    backdropFilter: 'blur(8px)',
+                  }}>
+                    Rs {item.price?.toLocaleString()}
+                  </div>
+                </div>
+
+                {/* Card Content */}
+                <div style={{ padding: '16px' }}>
+                  <h3 style={{
+                    fontSize: '14px',
+                    fontWeight: '700',
+                    color: '#3a5231',
+                    margin: '0 0 8px 0',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {item.name}
+                  </h3>
+
+                  {/* Rating */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', gap: '2px' }}>
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={13}
+                          style={i < (item.rating || 0) ? { color: '#c9972b', fill: '#c9972b' } : { color: '#d4c9b8', fill: 'none' }}
+                        />
+                      ))}
+                    </div>
+                    <span style={{ fontSize: '12px', color: '#8c9688', fontWeight: '600' }}>
+                      {item.rating?.toFixed(1) || '0.0'}
+                    </span>
+                  </div>
+
+                  {/* Quick Add Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addToCart({
+                        productId: item._id,
+                        name: item.name,
+                        price: item.price,
+                        image_url: item.image_url || item.image || "",
+                        quantity: 1,
+                      });
+                    }}
+                    style={{
+                      width: '100%',
+                      padding: '10px',
+                      borderRadius: '10px',
+                      border: '1.5px solid #4a6741',
+                      background: 'transparent',
+                      color: '#4a6741',
+                      fontSize: '12px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      transition: 'all 0.25s ease',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)';
+                      e.currentTarget.style.color = '#d4c9b8';
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(74, 103, 65, 0.25)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent';
+                      e.currentTarget.style.color = '#4a6741';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    🛒 Add to Cart
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-)}
+      )}
 
       {/* Footer */}
       <footer
