@@ -471,7 +471,7 @@ const ProductDetail = () => {
                       onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
                     >−</button>
                     <div style={{
-                      width: "48px",
+                      width: "38px",
                       height: "38px",
                       display: "flex",
                       alignItems: "center",
@@ -479,9 +479,11 @@ const ProductDetail = () => {
                       fontSize: "16px",
                       fontWeight: "800",
                       color: "#3a5231",
-                      borderTop: "1.5px solid #e5e0d7",
-                      borderBottom: "1.5px solid #e5e0d7",
+                      border: "1.5px solid #e5e0d7",
+                      borderLeft: "none",
+                      borderRight: "none",
                       background: "#faf9f6",
+                      boxSizing: "border-box",
                     }}>{unscentedQty}</div>
                     <button
                       onClick={() => setUnscentedQty(unscentedQty + 1)}
@@ -545,7 +547,7 @@ const ProductDetail = () => {
                       onMouseLeave={(e) => { e.currentTarget.style.background = '#fff'; }}
                     >−</button>
                     <div style={{
-                      width: "48px",
+                      width: "38px",
                       height: "38px",
                       display: "flex",
                       alignItems: "center",
@@ -553,9 +555,11 @@ const ProductDetail = () => {
                       fontSize: "16px",
                       fontWeight: "800",
                       color: "#3a5231",
-                      borderTop: "1.5px solid #e5e0d7",
-                      borderBottom: "1.5px solid #e5e0d7",
+                      border: "1.5px solid #e5e0d7",
+                      borderLeft: "none",
+                      borderRight: "none",
                       background: "#faf9f6",
+                      boxSizing: "border-box",
                     }}>{scentedQty}</div>
                     <button
                       onClick={() => setScentedQty(scentedQty + 1)}
@@ -744,30 +748,56 @@ const ProductDetail = () => {
               </button>
 
               <button
-                onClick={() => navigate("/cart")}
+                onClick={() => {
+                  if (totalQty === 0) return;
+                  // Add unscented candles to cart
+                  if (unscentedQty > 0) {
+                    addToCart({
+                      productId: product._id,
+                      name: `${product.name} (Unscented)`,
+                      price: product.price,
+                      image_url: product.image_url || product.image || "",
+                      quantity: unscentedQty,
+                    });
+                  }
+                  // Add scented candles to cart
+                  if (scentedQty > 0) {
+                    addToCart({
+                      productId: product._id + `-scented-${selectedScent.toLowerCase()}`,
+                      name: `${product.name} (Scented: ${selectedScent})`,
+                      price: product.price + 100,
+                      image_url: product.image_url || product.image || "",
+                      quantity: scentedQty,
+                    });
+                  }
+                  navigate("/checkout");
+                }}
                 style={{
                   flex: 1,
-                  background: "#ef4444",
-                  color: "white",
+                  background: totalQty === 0 ? "#e5e0d7" : "#ef4444",
+                  color: totalQty === 0 ? "#8c9688" : "white",
                   padding: "12px",
                   fontSize: "14px",
                   fontWeight: "bold",
                   border: "none",
                   borderRadius: "12px",
-                  cursor: "pointer",
-                  boxShadow: "0 4px 10px rgba(239, 68, 68, 0.3)",
-                  transition: "all 0.3s ease"
+                  cursor: totalQty === 0 ? "not-allowed" : "pointer",
+                  boxShadow: totalQty === 0 ? "none" : "0 4px 10px rgba(239, 68, 68, 0.3)",
+                  transition: "all 0.3s ease",
+                  opacity: totalQty === 0 ? 0.7 : 1,
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.boxShadow = "0 8px 20px rgba(239, 68, 68, 0.4)";
+                  if (totalQty > 0) {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = "0 8px 20px rgba(239, 68, 68, 0.4)";
+                  }
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 4px 10px rgba(239, 68, 68, 0.3)";
+                  e.currentTarget.style.boxShadow = totalQty === 0 ? "none" : "0 4px 10px rgba(239, 68, 68, 0.3)";
                 }}
               >
-                ⚡ Buy Now
+                ⚡ {totalQty === 0 ? 'Select Quantity' : 'Buy Now'}
               </button>
             </div>
           </div>

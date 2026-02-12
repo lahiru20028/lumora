@@ -129,9 +129,9 @@ const CheckoutForm: React.FC = () => {
         }
 
         if (paymentResult.paymentIntent.status !== 'succeeded') {
-            setError('Payment not successful.');
-            setLoading(false);
-            return;
+          setError('Payment not successful.');
+          setLoading(false);
+          return;
         }
 
         // Payment success! Proceed to save order.
@@ -189,7 +189,7 @@ const CheckoutForm: React.FC = () => {
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '24px', marginTop: '-20px', paddingBottom: '60px' }}>
-          
+
           {/* Summary Box */}
           <div style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', height: 'fit-content' }}>
             <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '10px' }}>Order Summary</h2>
@@ -208,7 +208,7 @@ const CheckoutForm: React.FC = () => {
           {/* Form Box */}
           <div style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
             <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '20px' }}>Shipping Details</h2>
-            
+
             {error && <div style={{ background: '#fee2e2', color: '#dc2626', padding: '12px', borderRadius: '8px', marginBottom: '20px', fontSize: '14px' }}>{error}</div>}
 
             <form onSubmit={handlePlaceOrder} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -216,7 +216,7 @@ const CheckoutForm: React.FC = () => {
               <input type="email" name="email" placeholder="Email" required value={formData.email} onChange={handleChange} style={inputStyle} />
               <input type="tel" name="phone" placeholder="Phone Number" required value={formData.phone} onChange={handleChange} style={inputStyle} />
               <textarea name="address" placeholder="Shipping Address" required value={formData.address} onChange={handleChange} rows={3} style={inputStyle} />
-              
+
               <div style={{ display: 'flex', gap: '10px' }}>
                 <input type="text" name="city" placeholder="City" required value={formData.city} onChange={handleChange} style={inputStyle} />
                 <input type="text" name="zipCode" placeholder="Zip" required value={formData.zipCode} onChange={handleChange} style={inputStyle} />
@@ -226,63 +226,54 @@ const CheckoutForm: React.FC = () => {
               <div style={{ marginBottom: '20px' }}>
                 <h3 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>Payment Method</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'cod' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'cod' ? '#4a6741' : '#e5e7eb' }}>
-                        <input 
-                            type="radio" 
-                            name="paymentMethod" 
-                            value="cod" 
-                            checked={paymentMethod === 'cod'} 
-                            onChange={(e) => setPaymentMethod(e.target.value)} 
-                        />
-                        <span>Cash on Delivery</span>
-                    </label>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'bank' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'bank' ? '#4a6741' : '#e5e7eb' }}>
-                        <input 
-                            type="radio" 
-                            name="paymentMethod" 
-                            value="bank" 
-                            checked={paymentMethod === 'bank'} 
-                            onChange={(e) => setPaymentMethod(e.target.value)} 
-                        />
-                        <span>Bank Payment</span>
-                    </label>
-                    <label style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'stripe' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'stripe' ? '#4a6741' : '#e5e7eb' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <input 
-                                type="radio" 
-                                name="paymentMethod" 
-                                value="stripe" 
-                                checked={paymentMethod === 'stripe'} 
-                                onChange={(e) => setPaymentMethod(e.target.value)} 
-                            />
-                            <span>Credit/Debit Card (Stripe)</span>
-                        </div>
-                        {paymentMethod === 'stripe' && (
-                            <div style={{ marginTop: '10px', padding: '10px', background: 'white', borderRadius: '4px', border: '1px solid #e5e7eb' }}>
-                                <CardElement options={{
-                                    style: {
-                                        base: {
-                                            fontSize: '16px',
-                                            color: '#424770',
-                                            '::placeholder': {
-                                                color: '#aab7c4',
-                                            },
-                                        },
-                                        invalid: {
-                                            color: '#9e2146',
-                                        },
-                                    },
-                                }}/>
-                            </div>
-                        )}
-                    </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'cod' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'cod' ? '#4a6741' : '#e5e7eb' }}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="cod"
+                      checked={paymentMethod === 'cod'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                    />
+                    <span>Cash on Delivery</span>
+                  </label>
+
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px', border: '1px solid #e5e7eb', borderRadius: '8px', cursor: 'pointer', background: paymentMethod === 'stripe' ? '#f0fdf4' : 'transparent', borderColor: paymentMethod === 'stripe' ? '#4a6741' : '#e5e7eb' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="stripe"
+                        checked={paymentMethod === 'stripe'}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                      />
+                      <span>Credit/Debit Card (Stripe)</span>
+                    </div>
+                    {paymentMethod === 'stripe' && (
+                      <div style={{ marginTop: '10px', padding: '10px', background: 'white', borderRadius: '4px', border: '1px solid #e5e7eb' }}>
+                        <CardElement options={{
+                          style: {
+                            base: {
+                              fontSize: '16px',
+                              color: '#424770',
+                              '::placeholder': {
+                                color: '#aab7c4',
+                              },
+                            },
+                            invalid: {
+                              color: '#9e2146',
+                            },
+                          },
+                        }} />
+                      </div>
+                    )}
+                  </label>
                 </div>
               </div>
 
-              <button type="submit" disabled={loading} style={{ 
-                width: '100%', padding: '16px', fontSize: '18px', fontWeight: 'bold', 
-                background: loading ? '#9ca3af' : 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)', 
-                color: '#d4c9b8', border: 'none', borderRadius: '12px', cursor: loading ? 'not-allowed' : 'pointer' 
+              <button type="submit" disabled={loading} style={{
+                width: '100%', padding: '16px', fontSize: '18px', fontWeight: 'bold',
+                background: loading ? '#9ca3af' : 'linear-gradient(135deg, #4a6741 0%, #3a5231 100%)',
+                color: '#d4c9b8', border: 'none', borderRadius: '12px', cursor: loading ? 'not-allowed' : 'pointer'
               }}>
                 {loading ? 'Processing...' : 'Place Order'}
               </button>
